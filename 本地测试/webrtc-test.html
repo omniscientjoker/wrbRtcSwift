@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleEyes WebRTC 测试页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+        }
+
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #e53e3e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .status.connected {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status.disconnected {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .status.calling {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .video-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            min-height: 300px;
+            background: #000;
+        }
+
+        .log-container {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 3px 0;
+        }
+
+        .log-entry.info {
+            color: #2c5282;
+        }
+
+        .log-entry.success {
+            color: #276749;
+        }
+
+        .log-entry.error {
+            color: #c53030;
+        }
+
+        @media (max-width: 768px) {
+            .video-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📹 SimpleEyes WebRTC</h1>
+            <p>网页端测试工具 - 与手机App联调</p>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">连接设置</h2>
+
+            <div class="form-group">
+                <label>WebSocket 服务器地址</label>
+                <input type="text" id="serverUrl" value="ws://localhost:8080" placeholder="ws://localhost:8080">
+            </div>
+
+            <div class="form-group">
+                <label>本机设备ID（网页端）</label>
+                <input type="text" id="myDeviceId" value="web-client" placeholder="web-client">
+            </div>
+
+            <div class="form-group">
+                <label>对方设备ID（手机App）</label>
+                <input type="text" id="targetDeviceId" value="" placeholder="输入手机App的设备ID">
+            </div>
+
+            <div class="button-group">
+                <button id="connectBtn" class="btn-primary">连接服务器</button>
+                <button id="disconnectBtn" class="btn-danger" disabled>断开连接</button>
+            </div>
+
+            <div id="status" class="status disconnected" style="margin-top: 15px;">
+                未连接
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">视频通话控制</h2>
+
+            <div class="button-group">
+                <button id="callBtn" class="btn-success" disabled>发起通话</button>
+                <button id="hangupBtn" class="btn-danger" disabled>挂断</button>
+            </div>
+
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <div class="video-label">本地视频</div>
+                    <video id="localVideo" autoplay muted playsinline></video>
+                </div>
+                <div class="video-wrapper">
+                    <div class="video-label">远程视频</div>
+                    <video id="remoteVideo" autoplay playsinline></video>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 15px;">日志</h2>
+            <div id="logContainer" class="log-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let ws = null;
+        let pc = null;
+        let localStream = null;
+        let myDeviceId = '';
+        let targetDeviceId = '';
+
+        // WebRTC 配置
+        const rtcConfiguration = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' }
+            ]
+        };
+
+        // DOM 元素
+        const serverUrlInput = document.getElementById('serverUrl');
+        const myDeviceIdInput = document.getElementById('myDeviceId');
+        const targetDeviceIdInput = document.getElementById('targetDeviceId');
+        const connectBtn = document.getElementById('connectBtn');
+        const disconnectBtn = document.getElementById('disconnectBtn');
+        const callBtn = document.getElementById('callBtn');
+        const hangupBtn = document.getElementById('hangupBtn');
+        const statusDiv = document.getElementById('status');
+        const localVideo = document.getElementById('localVideo');
+        const remoteVideo = document.getElementById('remoteVideo');
+        const logContainer = document.getElementById('logContainer');
+
+        // 日志函数
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            console.log(message);
+        }
+
+        // 更新状态
+        function updateStatus(message, className) {
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${className}`;
+        }
+
+        // 连接 WebSocket
+        connectBtn.addEventListener('click', () => {
+            const serverUrl = serverUrlInput.value.trim();
+            myDeviceId = myDeviceIdInput.value.trim();
+
+            if (!serverUrl || !myDeviceId) {
+                alert('请填写服务器地址和设备ID');
+                return;
+            }
+
+            const wsUrl = `${serverUrl}?deviceId=${myDeviceId}&type=peer`;
+            log(`正在连接: ${wsUrl}`, 'info');
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                log('✅ WebSocket 连接成功', 'success');
+                updateStatus('已连接到服务器', 'connected');
+                connectBtn.disabled = true;
+                disconnectBtn.disabled = false;
+                callBtn.disabled = false;
+            };
+
+            ws.onmessage = async (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    log(`📨 收到消息: ${data.type}`, 'info');
+                    await handleSignalingMessage(data);
+                } catch (error) {
+                    log(`❌ 处理消息失败: ${error.message}`, 'error');
+                }
+            };
+
+            ws.onerror = (error) => {
+                log('❌ WebSocket 错误', 'error');
+                console.error(error);
+            };
+
+            ws.onclose = () => {
+                log('❌ WebSocket 连接关闭', 'error');
+                updateStatus('已断开连接', 'disconnected');
+                connectBtn.disabled = false;
+                disconnectBtn.disabled = true;
+                callBtn.disabled = true;
+                hangupBtn.disabled = true;
+            };
+        });
+
+        // 断开连接
+        disconnectBtn.addEventListener('click', () => {
+            if (ws) {
+                ws.close();
+                ws = null;
+            }
+            if (pc) {
+                pc.close();
+                pc = null;
+            }
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                localStream = null;
+            }
+        });
+
+        // 发起通话
+        callBtn.addEventListener('click', async () => {
+            targetDeviceId = targetDeviceIdInput.value.trim();
+            if (!targetDeviceId) {
+                alert('请输入对方设备ID');
+                return;
+            }
+
+            try {
+                log('📞 发起通话...', 'info');
+                updateStatus('正在呼叫...', 'calling');
+
+                // 获取本地媒体流
+                await getLocalStream();
+
+                // 创建 PeerConnection
+                createPeerConnection();
+
+                // 添加本地流到连接
+                localStream.getTracks().forEach(track => {
+                    pc.addTrack(track, localStream);
+                });
+
+                // 发送通话请求
+                sendMessage({
+                    type: 'call',
+                    to: targetDeviceId,
+                    callType: 'video'
+                });
+
+                // 创建并发送 offer
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+
+                sendMessage({
+                    type: 'offer',
+                    to: targetDeviceId,
+                    sdp: offer.sdp
+                });
+
+                callBtn.disabled = true;
+                hangupBtn.disabled = false;
+
+                log('✅ Offer 已发送', 'success');
+            } catch (error) {
+                log(`❌ 发起通话失败: ${error.message}`, 'error');
+                updateStatus('通话失败', 'disconnected');
+            }
+        });
+
+        // 挂断
+        hangupBtn.addEventListener('click', () => {
+            if (targetDeviceId) {
+                sendMessage({
+                    type: 'hangup',
+                    to: targetDeviceId
+                });
+            }
+
+            if (pc) {
+                pc.close();
+                pc = null;
+            }
+
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                localStream = null;
+                localVideo.srcObject = null;
+            }
+
+            remoteVideo.srcObject = null;
+
+            callBtn.disabled = false;
+            hangupBtn.disabled = true;
+            updateStatus('已挂断', 'connected');
+            log('📴 通话已结束', 'info');
+        });
+
+        // 获取本地媒体流
+        async function getLocalStream() {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: 1280, height: 720 },
+                    audio: true
+                });
+                localVideo.srcObject = localStream;
+                log('✅ 本地媒体流获取成功', 'success');
+            } catch (error) {
+                log(`❌ 获取媒体流失败: ${error.message}`, 'error');
+                throw error;
+            }
+        }
+
+        // 创建 PeerConnection
+        function createPeerConnection() {
+            pc = new RTCPeerConnection(rtcConfiguration);
+
+            // ICE 候选事件
+            pc.onicecandidate = (event) => {
+                if (event.candidate && targetDeviceId) {
+                    sendMessage({
+                        type: 'ice-candidate',
+                        to: targetDeviceId,
+                        candidate: event.candidate.candidate,
+                        sdpMid: event.candidate.sdpMid,
+                        sdpMLineIndex: event.candidate.sdpMLineIndex
+                    });
+                    log('📡 ICE 候选已发送', 'info');
+                }
+            };
+
+            // 接收远程流
+            pc.ontrack = (event) => {
+                log('✅ 收到远程媒体流', 'success');
+                remoteVideo.srcObject = event.streams[0];
+                updateStatus('通话中', 'calling');
+            };
+
+            // 连接状态变化
+            pc.onconnectionstatechange = () => {
+                log(`连接状态: ${pc.connectionState}`, 'info');
+                if (pc.connectionState === 'connected') {
+                    updateStatus('通话已连接', 'calling');
+                } else if (pc.connectionState === 'failed' || pc.connectionState === 'disconnected') {
+                    updateStatus('通话断开', 'disconnected');
+                }
+            };
+
+            log('✅ PeerConnection 已创建', 'success');
+        }
+
+        // 处理信令消息
+        async function handleSignalingMessage(data) {
+            switch (data.type) {
+                case 'incoming-call':
+                    // 收到来电
+                    log(`📞 收到来电: ${data.from}`, 'success');
+                    targetDeviceId = data.from;
+
+                    if (confirm(`收到来自 ${data.from} 的视频通话请求，是否接听？`)) {
+                        await answerCall();
+                    }
+                    break;
+
+                case 'offer':
+                    // 收到 offer
+                    log('📨 收到 Offer', 'info');
+                    await handleOffer(data);
+                    break;
+
+                case 'answer':
+                    // 收到 answer
+                    log('📨 收到 Answer', 'info');
+                    await handleAnswer(data);
+                    break;
+
+                case 'ice-candidate':
+                    // 收到 ICE 候选
+                    log('📡 收到 ICE 候选', 'info');
+                    await handleIceCandidate(data);
+                    break;
+
+                case 'hangup':
+                    // 对方挂断
+                    log('📴 对方已挂断', 'info');
+                    hangupBtn.click();
+                    break;
+
+                case 'call-failed':
+                    log(`❌ 通话失败: ${data.reason}`, 'error');
+                    updateStatus('通话失败', 'disconnected');
+                    break;
+            }
+        }
+
+        // 接听通话
+        async function answerCall() {
+            try {
+                log('✅ 接听通话', 'success');
+                updateStatus('正在接听...', 'calling');
+
+                await getLocalStream();
+                createPeerConnection();
+
+                localStream.getTracks().forEach(track => {
+                    pc.addTrack(track, localStream);
+                });
+
+                callBtn.disabled = true;
+                hangupBtn.disabled = false;
+            } catch (error) {
+                log(`❌ 接听失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 处理 Offer
+        async function handleOffer(data) {
+            if (!pc) {
+                await answerCall();
+            }
+
+            await pc.setRemoteDescription({
+                type: 'offer',
+                sdp: data.sdp
+            });
+
+            const answer = await pc.createAnswer();
+            await pc.setLocalDescription(answer);
+
+            sendMessage({
+                type: 'answer',
+                to: data.from,
+                sdp: answer.sdp
+            });
+
+            log('✅ Answer 已发送', 'success');
+        }
+
+        // 处理 Answer
+        async function handleAnswer(data) {
+            await pc.setRemoteDescription({
+                type: 'answer',
+                sdp: data.sdp
+            });
+            log('✅ Answer 已应用', 'success');
+        }
+
+        // 处理 ICE 候选
+        async function handleIceCandidate(data) {
+            try {
+                await pc.addIceCandidate({
+                    candidate: data.candidate,
+                    sdpMid: data.sdpMid,
+                    sdpMLineIndex: data.sdpMLineIndex
+                });
+                log('✅ ICE 候选已添加', 'success');
+            } catch (error) {
+                log(`❌ 添加 ICE 候选失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 发送消息
+        function sendMessage(message) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify(message));
+            } else {
+                log('❌ WebSocket 未连接', 'error');
+            }
+        }
+
+        // 页面加载完成
+        log('页面已加载，请配置并连接服务器', 'info');
+    </script>
+</body>
+</html>
