@@ -1,0 +1,654 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		488CA84A63FA3218081E317B /* Pods_SimpleEyes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC6F1EFE9BFBE60D5EC46237 /* Pods_SimpleEyes.framework */; };
+		FA8E2F462EE9756A001CA5DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F422EE9756A001CA5DE /* ContentView.swift */; };
+		FA8E2F472EE9756A001CA5DE /* SimpleEyesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F432EE9756A001CA5DE /* SimpleEyesApp.swift */; };
+		FA8E2F482EE9756A001CA5DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8E2F412EE9756A001CA5DE /* Assets.xcassets */; };
+		FA8E2F5C2EEA4F6E001CA5DE /* DeviceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F562EEA4F6E001CA5DE /* DeviceListView.swift */; };
+		FA8E2F5D2EEA4F6E001CA5DE /* IntercomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F572EEA4F6E001CA5DE /* IntercomView.swift */; };
+		FA8E2F5E2EEA4F6E001CA5DE /* LiveVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F582EEA4F6E001CA5DE /* LiveVideoView.swift */; };
+		FA8E2F5F2EEA4F6E001CA5DE /* PlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F592EEA4F6E001CA5DE /* PlaybackView.swift */; };
+		FA8E2F602EEA4F6E001CA5DE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F5A2EEA4F6E001CA5DE /* SettingsView.swift */; };
+		FA8E2F622EEA4FD4001CA5DE /* IntercomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F612EEA4FD4001CA5DE /* IntercomManager.swift */; };
+		FA8E2F642EEA4FDF001CA5DE /* PlaybackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F632EEA4FDF001CA5DE /* PlaybackListViewController.swift */; };
+		FA8E2F672EEA4FEB001CA5DE /* DeviceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F662EEA4FEB001CA5DE /* DeviceListViewController.swift */; };
+		FA8E2F682EEA4FEB001CA5DE /* DeviceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F652EEA4FEB001CA5DE /* DeviceDetailViewController.swift */; };
+		FA8E2F802EEA57ED001CA5DE /* DeviceListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F7A2EEA57ED001CA5DE /* DeviceListViewModel.swift */; };
+		FA8E2F812EEA57ED001CA5DE /* IntercomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F7B2EEA57ED001CA5DE /* IntercomViewModel.swift */; };
+		FA8E2F822EEA57ED001CA5DE /* LiveVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F7C2EEA57ED001CA5DE /* LiveVideoViewModel.swift */; };
+		FA8E2F832EEA57ED001CA5DE /* PlaybackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F7D2EEA57ED001CA5DE /* PlaybackViewModel.swift */; };
+		FA8E2F842EEA57ED001CA5DE /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F7E2EEA57ED001CA5DE /* SettingsViewModel.swift */; };
+		FA8E2FBD2EEA9184001CA5DE /* WebRTCVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FBC2EEA9184001CA5DE /* WebRTCVideoView.swift */; };
+		FA8E2FBE2EEA9184001CA5DE /* VideoCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FBB2EEA9184001CA5DE /* VideoCallView.swift */; };
+		FA8E2FE02EEA9229001CA5DE /* VideoCallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FDF2EEA9229001CA5DE /* VideoCallViewModel.swift */; };
+		FA8E2FE32EEA9232001CA5DE /* VideoCallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FE12EEA9232001CA5DE /* VideoCallManager.swift */; };
+		FA8E2FE72EEA9241001CA5DE /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FE42EEA9241001CA5DE /* WebRTCClient.swift */; };
+		FA8E2FE82EEA9241001CA5DE /* WebRTCSignalingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FE52EEA9241001CA5DE /* WebRTCSignalingService.swift */; };
+		FA8E2FEC2EEA9241001CA5DE /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FE92EEA9241001CA5DE /* APIClient.swift */; };
+		FA8E2FED2EEA9241001CA5DE /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FEA2EEA9241001CA5DE /* Models.swift */; };
+		FA8E2FF12EEA9241001CA5DE /* IntercomWebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FEE2EEA9241001CA5DE /* IntercomWebSocketService.swift */; };
+		FA8E2FF22EEA9241001CA5DE /* IntercomWebSocketService_Fallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FEF2EEA9241001CA5DE /* IntercomWebSocketService_Fallback.swift */; };
+		FA8E2FF62EEA9241001CA5DE /* VideoCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FF32EEA9241001CA5DE /* VideoCaptureService.swift */; };
+		FA8E2FF72EEA9241001CA5DE /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FF42EEA9241001CA5DE /* VideoPlayerView.swift */; };
+		FA8E2FFB2EEA9241001CA5DE /* AudioCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FF82EEA9241001CA5DE /* AudioCodec.swift */; };
+		FA8E2FFC2EEA9241001CA5DE /* IntercomAudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FF92EEA9241001CA5DE /* IntercomAudioService.swift */; };
+		FA8E2FFE2EEA924B001CA5DE /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FFD2EEA924B001CA5DE /* PermissionManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		603A356CABE014BAE4BF18A3 /* Pods-SimpleEyes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleEyes.release.xcconfig"; path = "Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes.release.xcconfig"; sourceTree = "<group>"; };
+		C0D171FD5D47C45DB06FEE09 /* Pods-SimpleEyes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleEyes.debug.xcconfig"; path = "Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes.debug.xcconfig"; sourceTree = "<group>"; };
+		CC6F1EFE9BFBE60D5EC46237 /* Pods_SimpleEyes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleEyes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA8E2F162EE97502001CA5DE /* SimpleEyes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleEyes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA8E2F412EE9756A001CA5DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FA8E2F422EE9756A001CA5DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FA8E2F432EE9756A001CA5DE /* SimpleEyesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleEyesApp.swift; sourceTree = "<group>"; };
+		FA8E2F562EEA4F6E001CA5DE /* DeviceListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceListView.swift; sourceTree = "<group>"; };
+		FA8E2F572EEA4F6E001CA5DE /* IntercomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntercomView.swift; sourceTree = "<group>"; };
+		FA8E2F582EEA4F6E001CA5DE /* LiveVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveVideoView.swift; sourceTree = "<group>"; };
+		FA8E2F592EEA4F6E001CA5DE /* PlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackView.swift; sourceTree = "<group>"; };
+		FA8E2F5A2EEA4F6E001CA5DE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		FA8E2F612EEA4FD4001CA5DE /* IntercomManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntercomManager.swift; sourceTree = "<group>"; };
+		FA8E2F632EEA4FDF001CA5DE /* PlaybackListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackListViewController.swift; sourceTree = "<group>"; };
+		FA8E2F652EEA4FEB001CA5DE /* DeviceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDetailViewController.swift; sourceTree = "<group>"; };
+		FA8E2F662EEA4FEB001CA5DE /* DeviceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceListViewController.swift; sourceTree = "<group>"; };
+		FA8E2F7A2EEA57ED001CA5DE /* DeviceListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceListViewModel.swift; sourceTree = "<group>"; };
+		FA8E2F7B2EEA57ED001CA5DE /* IntercomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntercomViewModel.swift; sourceTree = "<group>"; };
+		FA8E2F7C2EEA57ED001CA5DE /* LiveVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModel.swift; sourceTree = "<group>"; };
+		FA8E2F7D2EEA57ED001CA5DE /* PlaybackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewModel.swift; sourceTree = "<group>"; };
+		FA8E2F7E2EEA57ED001CA5DE /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		FA8E2FBB2EEA9184001CA5DE /* VideoCallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallView.swift; sourceTree = "<group>"; };
+		FA8E2FBC2EEA9184001CA5DE /* WebRTCVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCVideoView.swift; sourceTree = "<group>"; };
+		FA8E2FDF2EEA9229001CA5DE /* VideoCallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewModel.swift; sourceTree = "<group>"; };
+		FA8E2FE12EEA9232001CA5DE /* VideoCallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallManager.swift; sourceTree = "<group>"; };
+		FA8E2FE42EEA9241001CA5DE /* WebRTCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
+		FA8E2FE52EEA9241001CA5DE /* WebRTCSignalingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCSignalingService.swift; sourceTree = "<group>"; };
+		FA8E2FE92EEA9241001CA5DE /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		FA8E2FEA2EEA9241001CA5DE /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		FA8E2FEE2EEA9241001CA5DE /* IntercomWebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntercomWebSocketService.swift; sourceTree = "<group>"; };
+		FA8E2FEF2EEA9241001CA5DE /* IntercomWebSocketService_Fallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntercomWebSocketService_Fallback.swift; sourceTree = "<group>"; };
+		FA8E2FF32EEA9241001CA5DE /* VideoCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCaptureService.swift; sourceTree = "<group>"; };
+		FA8E2FF42EEA9241001CA5DE /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		FA8E2FF82EEA9241001CA5DE /* AudioCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCodec.swift; sourceTree = "<group>"; };
+		FA8E2FF92EEA9241001CA5DE /* IntercomAudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntercomAudioService.swift; sourceTree = "<group>"; };
+		FA8E2FFD2EEA924B001CA5DE /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FA8E2F132EE97502001CA5DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				488CA84A63FA3218081E317B /* Pods_SimpleEyes.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		97F9B0C7F07F73098BC0D0D7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CC6F1EFE9BFBE60D5EC46237 /* Pods_SimpleEyes.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BACB3E9A4E489B021B70B00A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C0D171FD5D47C45DB06FEE09 /* Pods-SimpleEyes.debug.xcconfig */,
+				603A356CABE014BAE4BF18A3 /* Pods-SimpleEyes.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		FA8E2F0D2EE97502001CA5DE = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F442EE9756A001CA5DE /* SimpleEyes */,
+				FA8E2F172EE97502001CA5DE /* Products */,
+				BACB3E9A4E489B021B70B00A /* Pods */,
+				97F9B0C7F07F73098BC0D0D7 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		FA8E2F172EE97502001CA5DE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F162EE97502001CA5DE /* SimpleEyes.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FA8E2F372EE9756A001CA5DE /* Intercom */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F612EEA4FD4001CA5DE /* IntercomManager.swift */,
+			);
+			path = Intercom;
+			sourceTree = "<group>";
+		};
+		FA8E2F382EE9756A001CA5DE /* Playback */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F632EEA4FDF001CA5DE /* PlaybackListViewController.swift */,
+			);
+			path = Playback;
+			sourceTree = "<group>";
+		};
+		FA8E2F392EE9756A001CA5DE /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F652EEA4FEB001CA5DE /* DeviceDetailViewController.swift */,
+				FA8E2F662EEA4FEB001CA5DE /* DeviceListViewController.swift */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		FA8E2F3A2EE9756A001CA5DE /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F372EE9756A001CA5DE /* Intercom */,
+				FA8E2F382EE9756A001CA5DE /* Playback */,
+				FA8E2F392EE9756A001CA5DE /* Video */,
+				FA8E2FE22EEA9232001CA5DE /* VideoCall */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		FA8E2F3F2EE9756A001CA5DE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FFA2EEA9241001CA5DE /* AudioService */,
+				FA8E2FEB2EEA9241001CA5DE /* NetworkService */,
+				FA8E2FF52EEA9241001CA5DE /* VideoService */,
+				FA8E2FE62EEA9241001CA5DE /* WebRTCService */,
+				FA8E2FF02EEA9241001CA5DE /* WebSocketService */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		FA8E2F402EE9756A001CA5DE /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FFD2EEA924B001CA5DE /* PermissionManager.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		FA8E2F442EE9756A001CA5DE /* SimpleEyes */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F7F2EEA57ED001CA5DE /* ViewModels */,
+				FA8E2F5B2EEA4F6E001CA5DE /* Views */,
+				FA8E2F3A2EE9756A001CA5DE /* Modules */,
+				FA8E2F3F2EE9756A001CA5DE /* Services */,
+				FA8E2F402EE9756A001CA5DE /* Utils */,
+				FA8E2F412EE9756A001CA5DE /* Assets.xcassets */,
+				FA8E2F422EE9756A001CA5DE /* ContentView.swift */,
+				FA8E2F432EE9756A001CA5DE /* SimpleEyesApp.swift */,
+			);
+			path = SimpleEyes;
+			sourceTree = "<group>";
+		};
+		FA8E2F5B2EEA4F6E001CA5DE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F562EEA4F6E001CA5DE /* DeviceListView.swift */,
+				FA8E2F572EEA4F6E001CA5DE /* IntercomView.swift */,
+				FA8E2F582EEA4F6E001CA5DE /* LiveVideoView.swift */,
+				FA8E2F592EEA4F6E001CA5DE /* PlaybackView.swift */,
+				FA8E2F5A2EEA4F6E001CA5DE /* SettingsView.swift */,
+				FA8E2FBB2EEA9184001CA5DE /* VideoCallView.swift */,
+				FA8E2FBC2EEA9184001CA5DE /* WebRTCVideoView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FA8E2F7F2EEA57ED001CA5DE /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F7A2EEA57ED001CA5DE /* DeviceListViewModel.swift */,
+				FA8E2F7B2EEA57ED001CA5DE /* IntercomViewModel.swift */,
+				FA8E2FDF2EEA9229001CA5DE /* VideoCallViewModel.swift */,
+				FA8E2F7C2EEA57ED001CA5DE /* LiveVideoViewModel.swift */,
+				FA8E2F7D2EEA57ED001CA5DE /* PlaybackViewModel.swift */,
+				FA8E2F7E2EEA57ED001CA5DE /* SettingsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		FA8E2FE22EEA9232001CA5DE /* VideoCall */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FE12EEA9232001CA5DE /* VideoCallManager.swift */,
+			);
+			path = VideoCall;
+			sourceTree = "<group>";
+		};
+		FA8E2FE62EEA9241001CA5DE /* WebRTCService */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FE42EEA9241001CA5DE /* WebRTCClient.swift */,
+				FA8E2FE52EEA9241001CA5DE /* WebRTCSignalingService.swift */,
+			);
+			path = WebRTCService;
+			sourceTree = "<group>";
+		};
+		FA8E2FEB2EEA9241001CA5DE /* NetworkService */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FE92EEA9241001CA5DE /* APIClient.swift */,
+				FA8E2FEA2EEA9241001CA5DE /* Models.swift */,
+			);
+			path = NetworkService;
+			sourceTree = "<group>";
+		};
+		FA8E2FF02EEA9241001CA5DE /* WebSocketService */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FEE2EEA9241001CA5DE /* IntercomWebSocketService.swift */,
+				FA8E2FEF2EEA9241001CA5DE /* IntercomWebSocketService_Fallback.swift */,
+			);
+			path = WebSocketService;
+			sourceTree = "<group>";
+		};
+		FA8E2FF52EEA9241001CA5DE /* VideoService */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FF32EEA9241001CA5DE /* VideoCaptureService.swift */,
+				FA8E2FF42EEA9241001CA5DE /* VideoPlayerView.swift */,
+			);
+			path = VideoService;
+			sourceTree = "<group>";
+		};
+		FA8E2FFA2EEA9241001CA5DE /* AudioService */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FF82EEA9241001CA5DE /* AudioCodec.swift */,
+				FA8E2FF92EEA9241001CA5DE /* IntercomAudioService.swift */,
+			);
+			path = AudioService;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FA8E2F152EE97502001CA5DE /* SimpleEyes */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA8E2F212EE97503001CA5DE /* Build configuration list for PBXNativeTarget "SimpleEyes" */;
+			buildPhases = (
+				89C538E1E72073A6CFD0591D /* [CP] Check Pods Manifest.lock */,
+				FA8E2F122EE97502001CA5DE /* Sources */,
+				FA8E2F132EE97502001CA5DE /* Frameworks */,
+				FA8E2F142EE97502001CA5DE /* Resources */,
+				4D31E21C1BF90253DFD3B27E /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimpleEyes;
+			productName = SimpleEyes;
+			productReference = FA8E2F162EE97502001CA5DE /* SimpleEyes.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FA8E2F0E2EE97502001CA5DE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2610;
+				LastUpgradeCheck = 2610;
+				TargetAttributes = {
+					FA8E2F152EE97502001CA5DE = {
+						CreatedOnToolsVersion = 26.1.1;
+					};
+				};
+			};
+			buildConfigurationList = FA8E2F112EE97502001CA5DE /* Build configuration list for PBXProject "SimpleEyes" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FA8E2F0D2EE97502001CA5DE;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = FA8E2F172EE97502001CA5DE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FA8E2F152EE97502001CA5DE /* SimpleEyes */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FA8E2F142EE97502001CA5DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA8E2F482EE9756A001CA5DE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4D31E21C1BF90253DFD3B27E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		89C538E1E72073A6CFD0591D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SimpleEyes-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FA8E2F122EE97502001CA5DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA8E2FEC2EEA9241001CA5DE /* APIClient.swift in Sources */,
+				FA8E2FFB2EEA9241001CA5DE /* AudioCodec.swift in Sources */,
+				FA8E2FFC2EEA9241001CA5DE /* IntercomAudioService.swift in Sources */,
+				FA8E2FED2EEA9241001CA5DE /* Models.swift in Sources */,
+				FA8E2F642EEA4FDF001CA5DE /* PlaybackListViewController.swift in Sources */,
+				FA8E2FBD2EEA9184001CA5DE /* WebRTCVideoView.swift in Sources */,
+				FA8E2FBE2EEA9184001CA5DE /* VideoCallView.swift in Sources */,
+				FA8E2F622EEA4FD4001CA5DE /* IntercomManager.swift in Sources */,
+				FA8E2F462EE9756A001CA5DE /* ContentView.swift in Sources */,
+				FA8E2F5C2EEA4F6E001CA5DE /* DeviceListView.swift in Sources */,
+				FA8E2F5D2EEA4F6E001CA5DE /* IntercomView.swift in Sources */,
+				FA8E2FE32EEA9232001CA5DE /* VideoCallManager.swift in Sources */,
+				FA8E2FFE2EEA924B001CA5DE /* PermissionManager.swift in Sources */,
+				FA8E2F5E2EEA4F6E001CA5DE /* LiveVideoView.swift in Sources */,
+				FA8E2F5F2EEA4F6E001CA5DE /* PlaybackView.swift in Sources */,
+				FA8E2F602EEA4F6E001CA5DE /* SettingsView.swift in Sources */,
+				FA8E2F802EEA57ED001CA5DE /* DeviceListViewModel.swift in Sources */,
+				FA8E2F812EEA57ED001CA5DE /* IntercomViewModel.swift in Sources */,
+				FA8E2F822EEA57ED001CA5DE /* LiveVideoViewModel.swift in Sources */,
+				FA8E2F832EEA57ED001CA5DE /* PlaybackViewModel.swift in Sources */,
+				FA8E2FF12EEA9241001CA5DE /* IntercomWebSocketService.swift in Sources */,
+				FA8E2FF22EEA9241001CA5DE /* IntercomWebSocketService_Fallback.swift in Sources */,
+				FA8E2FE72EEA9241001CA5DE /* WebRTCClient.swift in Sources */,
+				FA8E2FE82EEA9241001CA5DE /* WebRTCSignalingService.swift in Sources */,
+				FA8E2FE02EEA9229001CA5DE /* VideoCallViewModel.swift in Sources */,
+				FA8E2FF62EEA9241001CA5DE /* VideoCaptureService.swift in Sources */,
+				FA8E2FF72EEA9241001CA5DE /* VideoPlayerView.swift in Sources */,
+				FA8E2F842EEA57ED001CA5DE /* SettingsViewModel.swift in Sources */,
+				FA8E2F672EEA4FEB001CA5DE /* DeviceListViewController.swift in Sources */,
+				FA8E2F682EEA4FEB001CA5DE /* DeviceDetailViewController.swift in Sources */,
+				FA8E2F472EE9756A001CA5DE /* SimpleEyesApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FA8E2F1F2EE97503001CA5DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = WJP39V24SS;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FA8E2F202EE97503001CA5DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = WJP39V24SS;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FA8E2F222EE97503001CA5DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C0D171FD5D47C45DB06FEE09 /* Pods-SimpleEyes.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "需要访问摄像头以使用视频通话功能";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要访问麦克风以使用语音对讲功能";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aidriving.motoroutedriver.SimpleEyes;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FA8E2F232EE97503001CA5DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 603A356CABE014BAE4BF18A3 /* Pods-SimpleEyes.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "需要访问摄像头以使用视频通话功能";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要访问麦克风以使用语音对讲功能";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aidriving.motoroutedriver.SimpleEyes;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FA8E2F112EE97502001CA5DE /* Build configuration list for PBXProject "SimpleEyes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA8E2F1F2EE97503001CA5DE /* Debug */,
+				FA8E2F202EE97503001CA5DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA8E2F212EE97503001CA5DE /* Build configuration list for PBXNativeTarget "SimpleEyes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA8E2F222EE97503001CA5DE /* Debug */,
+				FA8E2F232EE97503001CA5DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FA8E2F0E2EE97502001CA5DE /* Project object */;
+}

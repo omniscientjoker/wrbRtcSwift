@@ -1,0 +1,2 @@
+// Disable strict concurrency checking to avoid Sendable issues
+SWIFT_STRICT_CONCURRENCY = minimal
