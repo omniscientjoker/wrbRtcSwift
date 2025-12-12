@@ -79,13 +79,19 @@ class WebRTCClient: NSObject {
             // Google 公共 STUN 服务器
             RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"]),
             RTCIceServer(urlStrings: ["stun:stun1.l.google.com:19302"]),
+            RTCIceServer(urlStrings: ["stun:stun2.l.google.com:19302"]),
+            RTCIceServer(urlStrings: ["stun:stun3.l.google.com:19302"]),
 
-            // TODO: 添加您自己的 TURN 服务器以确保跨网穿透
-            // RTCIceServer(
-            //     urlStrings: ["turn:your-turn-server.com:3478"],
-            //     username: "username",
-            //     credential: "password"
-            // ),
+            // 备用公共 STUN 服务器（提高 SRFLX 候选生成成功率）
+            RTCIceServer(urlStrings: ["stun:stun.stunprotocol.org:3478"]),
+            RTCIceServer(urlStrings: ["stun:stun.services.mozilla.com:3478"]),
+
+            // TURN 服务器（解决多网络接口问题）
+            RTCIceServer(
+                urlStrings: ["turn:192.168.1.50:3478"],  // 替换为实际IP
+                username: "test",
+                credential: "test123"
+            ),
 
             // 备用 TURN 服务器（可选）
             // RTCIceServer(
@@ -97,6 +103,8 @@ class WebRTCClient: NSObject {
             //     credential: "password"
             // )
         ]
+
+        print("[WebRTCClient] Configured \(config.iceServers.count) ICE servers")
 
         // ICE 传输策略：all = 尝试所有候选（包括中继）
         config.iceTransportPolicy = .all
@@ -221,11 +229,34 @@ class WebRTCClient: NSObject {
 
     /// 添加 ICE Candidate
     func addIceCandidate(_ candidate: RTCIceCandidate) {
-        peerConnection?.add(candidate) { error in
+        print("[WebRTCClient] 📥 Adding remote ICE candidate: \(candidate.sdpMid ?? "nil"):\(candidate.sdpMLineIndex)")
+
+        // 分析 candidate 类型
+        let candidateStr = candidate.sdp
+        let candidateType: String
+        if candidateStr.contains("typ host") {
+            candidateType = "HOST (本地)"
+        } else if candidateStr.contains("typ srflx") {
+            candidateType = "SRFLX (NAT穿透)"
+        } else if candidateStr.contains("typ relay") {
+            candidateType = "RELAY (TURN中继)"
+        } else {
+            candidateType = "UNKNOWN"
+        }
+
+        print("[WebRTCClient]    Remote candidate type: \(candidateType)")
+        print("[WebRTCClient]    Remote candidate: \(candidateStr.prefix(80))...")
+
+        guard let pc = peerConnection else {
+            print("[WebRTCClient] ⚠️ PeerConnection is nil, cannot add ICE candidate")
+            return
+        }
+
+        pc.add(candidate) { error in
             if let error = error {
-                print("[WebRTCClient] Failed to add ICE candidate: \(error.localizedDescription)")
+                print("[WebRTCClient] ❌ Failed to add ICE candidate: \(error.localizedDescription)")
             } else {
-                print("[WebRTCClient] ICE candidate added successfully")
+                print("[WebRTCClient] ✅ Remote ICE candidate added successfully")
             }
         }
     }
@@ -240,6 +271,18 @@ class WebRTCClient: NSObject {
         videoCapturer = nil
 
         print("[WebRTCClient] Connection closed")
+    }
+
+    /// 设置音频开关
+    func setAudioEnabled(_ enabled: Bool) {
+        localAudioTrack?.isEnabled = enabled
+        print("[WebRTCClient] Audio track \(enabled ? "enabled" : "disabled")")
+    }
+
+    /// 设置视频开关
+    func setVideoEnabled(_ enabled: Bool) {
+        localVideoTrack?.isEnabled = enabled
+        print("[WebRTCClient] Video track \(enabled ? "enabled" : "disabled")")
     }
 
     // MARK: - Private Methods
@@ -314,7 +357,7 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
         }
 
         // 处理音频轨道
-        if let audioTrack = rtpReceiver.track as? RTCAudioTrack {
+        if rtpReceiver.track is RTCAudioTrack {
             print("[WebRTCClient] Received remote audio track (Unified Plan)")
         }
     }
@@ -324,16 +367,78 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
     }
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
-        print("[WebRTCClient] ICE connection state changed: \(newState.rawValue)")
+        let stateText: String
+        switch newState {
+        case .new: stateText = "NEW"
+        case .checking: stateText = "CHECKING"
+        case .connected: stateText = "CONNECTED ✅"
+        case .completed: stateText = "COMPLETED ✅"
+        case .failed: stateText = "FAILED ❌"
+        case .disconnected: stateText = "DISCONNECTED ⚠️"
+        case .closed: stateText = "CLOSED"
+        case .count: stateText = "COUNT"
+        @unknown default: stateText = "UNKNOWN"
+        }
+        print("[WebRTCClient] 🔌 ICE connection state changed: \(stateText) (rawValue: \(newState.rawValue))")
+
+        // 失败时打印更多调试信息
+        if newState == .failed {
+            print("[WebRTCClient] ❌ ICE 连接失败调试信息：")
+            print("[WebRTCClient]    Signaling State: \(peerConnection.signalingState.rawValue)")
+            print("[WebRTCClient]    Connection State: \(peerConnection.connectionState.rawValue)")
+            print("[WebRTCClient]    ICE Gathering State: \(peerConnection.iceGatheringState.rawValue)")
+
+            // 打印本地描述
+            if let localDesc = peerConnection.localDescription {
+                print("[WebRTCClient]    Local SDP type: \(localDesc.type.rawValue)")
+                let sdpLines = localDesc.sdp.components(separatedBy: "\n")
+                let candidateLines = sdpLines.filter { $0.contains("candidate:") }
+                print("[WebRTCClient]    Local candidates count: \(candidateLines.count)")
+            }
+
+            // 打印远程描述
+            if let remoteDesc = peerConnection.remoteDescription {
+                print("[WebRTCClient]    Remote SDP type: \(remoteDesc.type.rawValue)")
+                let sdpLines = remoteDesc.sdp.components(separatedBy: "\n")
+                let candidateLines = sdpLines.filter { $0.contains("candidate:") }
+                print("[WebRTCClient]    Remote candidates in SDP: \(candidateLines.count)")
+            }
+        }
+
         onConnectionStateChange?(newState)
     }
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
-        print("[WebRTCClient] ICE gathering state changed: \(newState.rawValue)")
+        let stateText: String
+        switch newState {
+        case .new: stateText = "NEW"
+        case .gathering: stateText = "GATHERING 🔍"
+        case .complete: stateText = "COMPLETE ✅"
+        @unknown default: stateText = "UNKNOWN"
+        }
+        print("[WebRTCClient] 🧊 ICE gathering state changed: \(stateText) (rawValue: \(newState.rawValue))")
     }
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
-        print("[WebRTCClient] Generated ICE candidate")
+        print("[WebRTCClient] 📤 Generated ICE candidate: \(candidate.sdpMid ?? "nil"):\(candidate.sdpMLineIndex)")
+
+        // 分析 candidate 类型
+        let candidateStr = candidate.sdp
+        let candidateType: String
+        if candidateStr.contains("typ host") {
+            candidateType = "HOST (本地)"
+        } else if candidateStr.contains("typ srflx") {
+            candidateType = "SRFLX (NAT穿透)"
+        } else if candidateStr.contains("typ relay") {
+            candidateType = "RELAY (TURN中继)"
+        } else if candidateStr.contains("typ prflx") {
+            candidateType = "PRFLX (对等反射)"
+        } else {
+            candidateType = "UNKNOWN"
+        }
+
+        print("[WebRTCClient]    Type: \(candidateType)")
+        print("[WebRTCClient]    Candidate: \(candidateStr.prefix(80))...")
         onIceCandidate?(candidate)
     }
 

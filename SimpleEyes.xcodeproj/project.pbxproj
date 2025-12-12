@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		488CA84A63FA3218081E317B /* Pods_SimpleEyes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC6F1EFE9BFBE60D5EC46237 /* Pods_SimpleEyes.framework */; };
+		DAF621789515B07175850A36 /* Pods_SimpleEyes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1E73DD53246DE2E7AFBB57B /* Pods_SimpleEyes.framework */; };
 		FA8E2F462EE9756A001CA5DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F422EE9756A001CA5DE /* ContentView.swift */; };
 		FA8E2F472EE9756A001CA5DE /* SimpleEyesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F432EE9756A001CA5DE /* SimpleEyesApp.swift */; };
 		FA8E2F482EE9756A001CA5DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8E2F412EE9756A001CA5DE /* Assets.xcassets */; };
@@ -27,6 +27,7 @@
 		FA8E2F842EEA57ED001CA5DE /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F7E2EEA57ED001CA5DE /* SettingsViewModel.swift */; };
 		FA8E2FBD2EEA9184001CA5DE /* WebRTCVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FBC2EEA9184001CA5DE /* WebRTCVideoView.swift */; };
 		FA8E2FBE2EEA9184001CA5DE /* VideoCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FBB2EEA9184001CA5DE /* VideoCallView.swift */; };
+		FA8E2FBF2EEA9185001CA5DE /* ActiveCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FBA2EEA9185001CA5DE /* ActiveCallView.swift */; };
 		FA8E2FE02EEA9229001CA5DE /* VideoCallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FDF2EEA9229001CA5DE /* VideoCallViewModel.swift */; };
 		FA8E2FE32EEA9232001CA5DE /* VideoCallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FE12EEA9232001CA5DE /* VideoCallManager.swift */; };
 		FA8E2FE72EEA9241001CA5DE /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FE42EEA9241001CA5DE /* WebRTCClient.swift */; };
@@ -43,9 +44,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		603A356CABE014BAE4BF18A3 /* Pods-SimpleEyes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleEyes.release.xcconfig"; path = "Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes.release.xcconfig"; sourceTree = "<group>"; };
-		C0D171FD5D47C45DB06FEE09 /* Pods-SimpleEyes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleEyes.debug.xcconfig"; path = "Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes.debug.xcconfig"; sourceTree = "<group>"; };
-		CC6F1EFE9BFBE60D5EC46237 /* Pods_SimpleEyes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleEyes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		07C501625A0D492D700B623F /* Pods-SimpleEyes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleEyes.release.xcconfig"; path = "Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes.release.xcconfig"; sourceTree = "<group>"; };
+		64EC3AC704CB85EB358A89A9 /* Pods-SimpleEyes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleEyes.debug.xcconfig"; path = "Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes.debug.xcconfig"; sourceTree = "<group>"; };
+		E1E73DD53246DE2E7AFBB57B /* Pods_SimpleEyes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleEyes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA8E2F162EE97502001CA5DE /* SimpleEyes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleEyes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA8E2F412EE9756A001CA5DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA8E2F422EE9756A001CA5DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 		FA8E2F7C2EEA57ED001CA5DE /* LiveVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModel.swift; sourceTree = "<group>"; };
 		FA8E2F7D2EEA57ED001CA5DE /* PlaybackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewModel.swift; sourceTree = "<group>"; };
 		FA8E2F7E2EEA57ED001CA5DE /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		FA8E2FBA2EEA9185001CA5DE /* ActiveCallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveCallView.swift; sourceTree = "<group>"; };
 		FA8E2FBB2EEA9184001CA5DE /* VideoCallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallView.swift; sourceTree = "<group>"; };
 		FA8E2FBC2EEA9184001CA5DE /* WebRTCVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCVideoView.swift; sourceTree = "<group>"; };
 		FA8E2FDF2EEA9229001CA5DE /* VideoCallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewModel.swift; sourceTree = "<group>"; };
@@ -86,17 +88,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				488CA84A63FA3218081E317B /* Pods_SimpleEyes.framework in Frameworks */,
+				DAF621789515B07175850A36 /* Pods_SimpleEyes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		97F9B0C7F07F73098BC0D0D7 /* Frameworks */ = {
+		5B9EEDD01DED174B558FBF35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CC6F1EFE9BFBE60D5EC46237 /* Pods_SimpleEyes.framework */,
+				E1E73DD53246DE2E7AFBB57B /* Pods_SimpleEyes.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -104,8 +106,8 @@
 		BACB3E9A4E489B021B70B00A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C0D171FD5D47C45DB06FEE09 /* Pods-SimpleEyes.debug.xcconfig */,
-				603A356CABE014BAE4BF18A3 /* Pods-SimpleEyes.release.xcconfig */,
+				64EC3AC704CB85EB358A89A9 /* Pods-SimpleEyes.debug.xcconfig */,
+				07C501625A0D492D700B623F /* Pods-SimpleEyes.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -116,7 +118,7 @@
 				FA8E2F442EE9756A001CA5DE /* SimpleEyes */,
 				FA8E2F172EE97502001CA5DE /* Products */,
 				BACB3E9A4E489B021B70B00A /* Pods */,
-				97F9B0C7F07F73098BC0D0D7 /* Frameworks */,
+				5B9EEDD01DED174B558FBF35 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -207,6 +209,7 @@
 				FA8E2F582EEA4F6E001CA5DE /* LiveVideoView.swift */,
 				FA8E2F592EEA4F6E001CA5DE /* PlaybackView.swift */,
 				FA8E2F5A2EEA4F6E001CA5DE /* SettingsView.swift */,
+				FA8E2FBA2EEA9185001CA5DE /* ActiveCallView.swift */,
 				FA8E2FBB2EEA9184001CA5DE /* VideoCallView.swift */,
 				FA8E2FBC2EEA9184001CA5DE /* WebRTCVideoView.swift */,
 			);
@@ -286,11 +289,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA8E2F212EE97503001CA5DE /* Build configuration list for PBXNativeTarget "SimpleEyes" */;
 			buildPhases = (
-				89C538E1E72073A6CFD0591D /* [CP] Check Pods Manifest.lock */,
+				61E6A9D6B9C1411A69CEBAEE /* [CP] Check Pods Manifest.lock */,
 				FA8E2F122EE97502001CA5DE /* Sources */,
 				FA8E2F132EE97502001CA5DE /* Frameworks */,
 				FA8E2F142EE97502001CA5DE /* Resources */,
-				4D31E21C1BF90253DFD3B27E /* [CP] Embed Pods Frameworks */,
+				D2F751949488663B1F1E904A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -347,28 +350,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4D31E21C1BF90253DFD3B27E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		89C538E1E72073A6CFD0591D /* [CP] Check Pods Manifest.lock */ = {
+		61E6A9D6B9C1411A69CEBAEE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -390,6 +372,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D2F751949488663B1F1E904A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SimpleEyes/Pods-SimpleEyes-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -404,6 +403,7 @@
 				FA8E2F642EEA4FDF001CA5DE /* PlaybackListViewController.swift in Sources */,
 				FA8E2FBD2EEA9184001CA5DE /* WebRTCVideoView.swift in Sources */,
 				FA8E2FBE2EEA9184001CA5DE /* VideoCallView.swift in Sources */,
+				FA8E2FBF2EEA9185001CA5DE /* ActiveCallView.swift in Sources */,
 				FA8E2F622EEA4FD4001CA5DE /* IntercomManager.swift in Sources */,
 				FA8E2F462EE9756A001CA5DE /* ContentView.swift in Sources */,
 				FA8E2F5C2EEA4F6E001CA5DE /* DeviceListView.swift in Sources */,
@@ -557,13 +557,13 @@
 		};
 		FA8E2F222EE97503001CA5DE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C0D171FD5D47C45DB06FEE09 /* Pods-SimpleEyes.debug.xcconfig */;
+			baseConfigurationReference = 64EC3AC704CB85EB358A89A9 /* Pods-SimpleEyes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WJP39V24SS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要访问摄像头以使用视频通话功能";
@@ -593,13 +593,13 @@
 		};
 		FA8E2F232EE97503001CA5DE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 603A356CABE014BAE4BF18A3 /* Pods-SimpleEyes.release.xcconfig */;
+			baseConfigurationReference = 07C501625A0D492D700B623F /* Pods-SimpleEyes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WJP39V24SS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要访问摄像头以使用视频通话功能";

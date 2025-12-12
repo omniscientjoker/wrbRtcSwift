@@ -187,13 +187,6 @@ private class SimpleAACEncoder {
 
         let maxOutputSize = pcmData.count
         var outputBuffer = [UInt8](repeating: 0, count: maxOutputSize)
-        var outputBufferList = AudioBufferList()
-        outputBufferList.mNumberBuffers = 1
-        outputBufferList.mBuffers.mNumberChannels = channels
-        outputBufferList.mBuffers.mDataByteSize = UInt32(maxOutputSize)
-        outputBufferList.mBuffers.mData = UnsafeMutableRawPointer(&outputBuffer)
-
-        var ioOutputDataPacketSize: UInt32 = 1
         var inputData = pcmData
 
         let inputProc: AudioConverterComplexInputDataProc = { (_, ioNumberDataPackets, ioData, _, inUserData) -> OSStatus in
@@ -209,12 +202,25 @@ private class SimpleAACEncoder {
             return noErr
         }
 
-        let status = AudioConverterFillComplexBuffer(converter, inputProc, &inputData,
-                                                     &ioOutputDataPacketSize, &outputBufferList, nil)
-        guard status == noErr else { return nil }
+        var finalOutputSize = 0
+        let status = outputBuffer.withUnsafeMutableBytes { bufferPointer -> OSStatus in
+            var outputBufferList = AudioBufferList()
+            outputBufferList.mNumberBuffers = 1
+            outputBufferList.mBuffers.mNumberChannels = channels
+            outputBufferList.mBuffers.mDataByteSize = UInt32(maxOutputSize)
+            outputBufferList.mBuffers.mData = bufferPointer.baseAddress
 
-        let outputSize = Int(outputBufferList.mBuffers.mDataByteSize)
-        return Data(bytes: outputBuffer, count: outputSize)
+            var ioOutputDataPacketSize: UInt32 = 1
+            let result = withUnsafeMutablePointer(to: &inputData) { dataPtr in
+                AudioConverterFillComplexBuffer(converter, inputProc, dataPtr,
+                                               &ioOutputDataPacketSize, &outputBufferList, nil)
+            }
+            finalOutputSize = Int(outputBufferList.mBuffers.mDataByteSize)
+            return result
+        }
+
+        guard status == noErr else { return nil }
+        return Data(bytes: outputBuffer, count: finalOutputSize)
     }
 
     deinit {
@@ -261,13 +267,6 @@ private class SimpleAACDecoder {
 
         let maxOutputSize = aacData.count * 4
         var outputBuffer = [UInt8](repeating: 0, count: maxOutputSize)
-        var outputBufferList = AudioBufferList()
-        outputBufferList.mNumberBuffers = 1
-        outputBufferList.mBuffers.mNumberChannels = channels
-        outputBufferList.mBuffers.mDataByteSize = UInt32(maxOutputSize)
-        outputBufferList.mBuffers.mData = UnsafeMutableRawPointer(&outputBuffer)
-
-        var ioOutputDataPacketSize: UInt32 = UInt32(maxOutputSize / 2)
         var inputData = aacData
 
         let inputProc: AudioConverterComplexInputDataProc = { (_, ioNumberDataPackets, ioData, _, inUserData) -> OSStatus in
@@ -283,12 +282,25 @@ private class SimpleAACDecoder {
             return noErr
         }
 
-        let status = AudioConverterFillComplexBuffer(converter, inputProc, &inputData,
-                                                     &ioOutputDataPacketSize, &outputBufferList, nil)
-        guard status == noErr else { return nil }
+        var finalOutputSize = 0
+        let status = outputBuffer.withUnsafeMutableBytes { bufferPointer -> OSStatus in
+            var outputBufferList = AudioBufferList()
+            outputBufferList.mNumberBuffers = 1
+            outputBufferList.mBuffers.mNumberChannels = channels
+            outputBufferList.mBuffers.mDataByteSize = UInt32(maxOutputSize)
+            outputBufferList.mBuffers.mData = bufferPointer.baseAddress
 
-        let outputSize = Int(outputBufferList.mBuffers.mDataByteSize)
-        return Data(bytes: outputBuffer, count: outputSize)
+            var ioOutputDataPacketSize: UInt32 = UInt32(maxOutputSize / 2)
+            let result = withUnsafeMutablePointer(to: &inputData) { dataPtr in
+                AudioConverterFillComplexBuffer(converter, inputProc, dataPtr,
+                                               &ioOutputDataPacketSize, &outputBufferList, nil)
+            }
+            finalOutputSize = Int(outputBufferList.mBuffers.mDataByteSize)
+            return result
+        }
+
+        guard status == noErr else { return nil }
+        return Data(bytes: outputBuffer, count: finalOutputSize)
     }
 
     deinit {

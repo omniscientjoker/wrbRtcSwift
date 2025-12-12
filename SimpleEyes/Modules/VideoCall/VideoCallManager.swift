@@ -167,7 +167,7 @@ class VideoCallManager {
 
     /// 接受来电
     func acceptCall() {
-        guard let remoteDeviceId = remoteDeviceId else {
+        guard remoteDeviceId != nil else {
             print("[VideoCallManager] No incoming call to accept")
             return
         }
@@ -213,15 +213,14 @@ class VideoCallManager {
         cleanup()
     }
 
-    /// 切换摄像头
-    func switchCamera() {
-        // TODO: 实现摄像头切换
+    /// 设置音频开关
+    func setAudioEnabled(_ enabled: Bool) {
+        webRTCClient.setAudioEnabled(enabled)
     }
 
-    /// 静音/取消静音
-    func toggleMute() -> Bool {
-        // TODO: 实现静音切换
-        return false
+    /// 设置视频开关
+    func setVideoEnabled(_ enabled: Bool) {
+        webRTCClient.setVideoEnabled(enabled)
     }
 
     // MARK: - Private Methods
@@ -229,12 +228,16 @@ class VideoCallManager {
     private func createAndSendOffer() {
         guard let remoteDeviceId = remoteDeviceId else { return }
 
+        print("[VideoCallManager] 📤 Creating offer for: \(remoteDeviceId)")
         webRTCClient.createOffer { [weak self] sdp in
             guard let sdp = sdp else {
+                print("[VideoCallManager] ❌ Failed to create offer")
                 self?.onStateChanged?(.error("创建 Offer 失败"))
                 return
             }
 
+            print("[VideoCallManager] ✅ Offer created, SDP length: \(sdp.sdp.count) characters")
+            print("[VideoCallManager] 📤 Sending offer to: \(remoteDeviceId)")
             self?.signalingService.sendOffer(sdp, to: remoteDeviceId)
         }
     }
@@ -267,11 +270,15 @@ class VideoCallManager {
     }
 
     private func handleReceivedAnswer(_ sdp: RTCSessionDescription) {
+        print("[VideoCallManager] 📥 Received answer, setting remote description...")
+        print("[VideoCallManager] Answer SDP type: \(sdp.type.rawValue)")
+
         webRTCClient.setRemoteDescription(sdp: sdp) { [weak self] error in
             if let error = error {
+                print("[VideoCallManager] ❌ Failed to set remote description: \(error.localizedDescription)")
                 self?.onStateChanged?(.error("设置远程描述失败: \(error.localizedDescription)"))
             } else {
-                print("[VideoCallManager] Remote description set, connection establishing...")
+                print("[VideoCallManager] ✅ Remote description set successfully, connection establishing...")
             }
         }
     }

@@ -4,24 +4,28 @@ import WebRTC
 struct VideoCallView: View {
     @StateObject private var viewModel = VideoCallViewModel()
     @State private var hasLoaded = false
+    @State private var navigateToActiveCall = false
 
     var body: some View {
         ZStack {
-            // 根据通话状态切换背景色
-            if viewModel.isInCall {
-                // 通话中 - 黑色背景
-                Color.black.ignoresSafeArea()
-                // 通话中界面
-                CallActiveView(viewModel: viewModel)
-            } else {
-                // 空闲时 - 白色背景
-                Color.white.ignoresSafeArea()
-                // 空闲界面（设备选择）
-                CallIdleView(viewModel: viewModel, hasLoaded: $hasLoaded)
-            }
+            // 空闲界面（设备选择）
+            Color.white.ignoresSafeArea()
+            CallIdleView(viewModel: viewModel, hasLoaded: $hasLoaded)
+        }
+        .fullScreenCover(isPresented: $navigateToActiveCall) {
+            ActiveCallView(viewModel: viewModel)
         }
         .navigationTitle("视频通话")
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: viewModel.callState) { newState in
+            // 当进入通话状态时，自动跳转到通话页面
+            switch newState {
+            case .connecting, .ringing, .connected:
+                navigateToActiveCall = true
+            case .idle, .disconnected, .error:
+                navigateToActiveCall = false
+            }
+        }
         .alert("来电", isPresented: $viewModel.showIncomingCallAlert) {
             Button("拒绝", role: .cancel) {
                 viewModel.rejectCall()
@@ -277,97 +281,6 @@ struct DeviceSelectionSection: View {
             .disabled(!viewModel.canStartCall)
         }
         .padding(.horizontal)
-    }
-}
-
-// MARK: - Call Active View (通话中)
-
-struct CallActiveView: View {
-    @ObservedObject var viewModel: VideoCallViewModel
-
-    var body: some View {
-        ZStack {
-            // 远程视频（全屏）
-            if let remoteTrack = viewModel.remoteVideoTrack {
-                WebRTCVideoView(videoTrack: remoteTrack)
-                    .ignoresSafeArea()
-            } else {
-                // 等待远程视频
-                VStack {
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                        .scaleEffect(1.5)
-                    Text(viewModel.callState.displayText)
-                        .foregroundColor(.white)
-                        .padding(.top)
-                }
-            }
-
-            // 本地视频（画中画）
-            VStack {
-                HStack {
-                    Spacer()
-                    if let localTrack = viewModel.localVideoTrack {
-                        WebRTCVideoView(videoTrack: localTrack)
-                            .frame(width: 120, height: 160)
-                            .cornerRadius(12)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.white, lineWidth: 2)
-                            )
-                            .shadow(radius: 10)
-                            .padding()
-                    }
-                }
-                Spacer()
-            }
-
-            // 控制按钮
-            VStack {
-                Spacer()
-
-                // 状态信息
-                HStack {
-                    Circle()
-                        .fill(statusColor)
-                        .frame(width: 12, height: 12)
-                    Text(viewModel.callState.displayText)
-                        .foregroundColor(.white)
-                        .font(.subheadline)
-                }
-                .padding(12)
-                .background(Color.black.opacity(0.6))
-                .cornerRadius(20)
-                .padding(.bottom, 8)
-
-                // 挂断按钮
-                Button(action: {
-                    viewModel.endCall()
-                }) {
-                    Image(systemName: "phone.down.fill")
-                        .font(.title)
-                        .foregroundColor(.white)
-                        .frame(width: 70, height: 70)
-                        .background(Color.red)
-                        .clipShape(Circle())
-                        .shadow(radius: 10)
-                }
-                .padding(.bottom, 40)
-            }
-        }
-    }
-
-    private var statusColor: Color {
-        switch viewModel.callState {
-        case .idle, .disconnected:
-            return .gray
-        case .connecting, .ringing:
-            return .orange
-        case .connected:
-            return .green
-        case .error:
-            return .red
-        }
     }
 }
 

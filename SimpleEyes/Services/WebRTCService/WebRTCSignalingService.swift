@@ -230,23 +230,27 @@ class WebRTCSignalingService: WebSocketDelegate {
     }
 
     private func handleAnswer(_ json: [String: Any]) {
+        print("[WebRTCSignalingService] Received answer message: \(json.keys)")
+
         // 兼容两种格式
         let sdpString: String?
         if let sdpDict = json["sdp"] as? [String: Any] {
             // 嵌套格式: {"sdp": {"sdp": "..."}}
             sdpString = sdpDict["sdp"] as? String
+            print("[WebRTCSignalingService] Using nested SDP format")
         } else {
             // 扁平格式: {"sdp": "..."}
             sdpString = json["sdp"] as? String
+            print("[WebRTCSignalingService] Using flat SDP format")
         }
 
         guard let sdp = sdpString else {
-            print("[WebRTCSignalingService] Invalid answer format: missing SDP")
+            print("[WebRTCSignalingService] ❌ Invalid answer format: missing SDP. Keys: \(json.keys)")
             return
         }
 
+        print("[WebRTCSignalingService] ✅ Answer SDP length: \(sdp.count) characters")
         let sessionDescription = RTCSessionDescription(type: .answer, sdp: sdp)
-        print("[WebRTCSignalingService] Parsed answer")
         onAnswer?(sessionDescription)
     }
 

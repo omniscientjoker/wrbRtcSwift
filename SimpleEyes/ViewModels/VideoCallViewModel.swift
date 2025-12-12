@@ -27,6 +27,12 @@ class VideoCallViewModel: ObservableObject {
     @Published var signalingConnected: Bool = false
     @Published var localDeviceId: String = ""
 
+    // 通话控制状态
+    @Published var isAudioEnabled: Bool = true
+    @Published var isVideoEnabled: Bool = true
+    @Published var isLocalVideoLarge: Bool = false  // true: 本地视频大屏，false: 远程视频大屏
+    @Published var isPiPMode: Bool = false  // 画中画模式
+
     // MARK: - Private Properties
 
     private var videoCallManager: VideoCallManager?
@@ -246,6 +252,32 @@ class VideoCallViewModel: ObservableObject {
         cleanup()
     }
 
+    /// 切换音频开关
+    func toggleAudio() {
+        isAudioEnabled.toggle()
+        videoCallManager?.setAudioEnabled(isAudioEnabled)
+        print("[VideoCallViewModel] Audio \(isAudioEnabled ? "enabled" : "disabled")")
+    }
+
+    /// 切换视频开关
+    func toggleVideo() {
+        isVideoEnabled.toggle()
+        videoCallManager?.setVideoEnabled(isVideoEnabled)
+        print("[VideoCallViewModel] Video \(isVideoEnabled ? "enabled" : "disabled")")
+    }
+
+    /// 切换大小屏
+    func toggleVideoSize() {
+        isLocalVideoLarge.toggle()
+        print("[VideoCallViewModel] Switched to \(isLocalVideoLarge ? "local" : "remote") video large")
+    }
+
+    /// 切换画中画模式
+    func togglePiPMode() {
+        isPiPMode.toggle()
+        print("[VideoCallViewModel] PiP mode \(isPiPMode ? "enabled" : "disabled")")
+    }
+
     // MARK: - Private Methods
 
     private func setupCallbacks(for manager: VideoCallManager) {
@@ -312,7 +344,7 @@ class VideoCallViewModel: ObservableObject {
         }
     }
 
-    private func requestCameraAndMicrophonePermission(completion: @escaping (Bool) -> Void) {
+    nonisolated private func requestCameraAndMicrophonePermission(completion: @escaping (Bool) -> Void) {
         let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
         _ = AVCaptureDevice.authorizationStatus(for: .audio)
 
@@ -346,7 +378,7 @@ class VideoCallViewModel: ObservableObject {
         }
     }
 
-    private func checkMicrophonePermission(completion: @escaping (Bool) -> Void) {
+    nonisolated private func checkMicrophonePermission(completion: @escaping (Bool) -> Void) {
         let audioStatus = AVCaptureDevice.authorizationStatus(for: .audio)
 
         switch audioStatus {
@@ -394,6 +426,12 @@ class VideoCallViewModel: ObservableObject {
         // 重置状态
         callState = VideoCallState.idle
         errorMessage = nil
+
+        // 重置通话控制状态
+        isAudioEnabled = true
+        isVideoEnabled = true
+        isLocalVideoLarge = false
+        isPiPMode = false
 
         // 不清空 videoCallManager，保持信令连接以接收新的来电
         // videoCallManager 只在用户主动断开连接时清理

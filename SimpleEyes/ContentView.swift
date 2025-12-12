@@ -41,11 +41,13 @@ struct ContentView: View {
                 .tag(2)
 
             // 视频通话
-            VideoCallView()
-                .tabItem {
-                    Label("视频", systemImage: "video.fill")
-                }
-                .tag(3)
+            NavigationView {
+                VideoCallView()
+            }
+            .tabItem {
+                Label("视频", systemImage: "video.fill")
+            }
+            .tag(3)
 
             // 设置
             SettingsView()

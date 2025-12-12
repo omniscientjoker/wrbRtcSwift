@@ -74,19 +74,8 @@ class AACAudioEncoder {
         let maxOutputSize = inputDataSize // AAC 输出通常更小
         var outputBuffer = [UInt8](repeating: 0, count: maxOutputSize)
 
-        // 创建输出缓冲区列表
-        var outputBufferList = AudioBufferList()
-        outputBufferList.mNumberBuffers = 1
-        outputBufferList.mBuffers.mNumberChannels = channels
-        outputBufferList.mBuffers.mDataByteSize = UInt32(maxOutputSize)
-        outputBufferList.mBuffers.mData = UnsafeMutableRawPointer(mutating: &outputBuffer)
-
-        // 输入数据包描述
-        var outputPacketDesc = AudioStreamPacketDescription()
-        var ioOutputDataPacketSize: UInt32 = 1
-
         // 准备输入数据
-        var inputData = pcmData
+        let inputData = pcmData
 
         // 定义输入回调
         let inputProc: AudioConverterComplexInputDataProc = { (
@@ -111,24 +100,44 @@ class AACAudioEncoder {
             return noErr
         }
 
-        // 执行转换
+        // 使用 withUnsafeMutableBytes 确保指针生命周期正确
+        var finalOutputSize = 0
         var inputDataCopy = inputData
-        let status = AudioConverterFillComplexBuffer(
-            converter,
-            inputProc,
-            &inputDataCopy,
-            &ioOutputDataPacketSize,
-            &outputBufferList,
-            &outputPacketDesc
-        )
+        let status = outputBuffer.withUnsafeMutableBytes { bufferPointer -> OSStatus in
+            // 创建输出缓冲区列表
+            var outputBufferList = AudioBufferList()
+            outputBufferList.mNumberBuffers = 1
+            outputBufferList.mBuffers.mNumberChannels = channels
+            outputBufferList.mBuffers.mDataByteSize = UInt32(maxOutputSize)
+            outputBufferList.mBuffers.mData = bufferPointer.baseAddress
+
+            // 输入数据包描述
+            var outputPacketDesc = AudioStreamPacketDescription()
+            var ioOutputDataPacketSize: UInt32 = 1
+
+            // 执行转换 - 使用 withUnsafeMutablePointer 来安全地传递 Data 指针
+            let result = withUnsafeMutablePointer(to: &inputDataCopy) { dataPtr in
+                AudioConverterFillComplexBuffer(
+                    converter,
+                    inputProc,
+                    dataPtr,
+                    &ioOutputDataPacketSize,
+                    &outputBufferList,
+                    &outputPacketDesc
+                )
+            }
+
+            // 捕获输出大小
+            finalOutputSize = Int(outputBufferList.mBuffers.mDataByteSize)
+            return result
+        }
 
         guard status == noErr else {
             print("[AACAudioEncoder] Encoding failed: \(status)")
             return nil
         }
 
-        let outputSize = Int(outputBufferList.mBuffers.mDataByteSize)
-        return Data(bytes: outputBuffer, count: outputSize)
+        return Data(bytes: outputBuffer, count: finalOutputSize)
     }
 
     deinit {
@@ -190,17 +199,8 @@ class AACAudioDecoder {
         let maxOutputSize = aacData.count * 4 // PCM 通常更大
         var outputBuffer = [UInt8](repeating: 0, count: maxOutputSize)
 
-        // 创建输出缓冲区列表
-        var outputBufferList = AudioBufferList()
-        outputBufferList.mNumberBuffers = 1
-        outputBufferList.mBuffers.mNumberChannels = channels
-        outputBufferList.mBuffers.mDataByteSize = UInt32(maxOutputSize)
-        outputBufferList.mBuffers.mData = UnsafeMutableRawPointer(mutating: &outputBuffer)
-
-        var ioOutputDataPacketSize: UInt32 = UInt32(maxOutputSize / 2) // 采样点数
-
         // 准备输入数据
-        var inputData = aacData
+        let inputData = aacData
 
         // 定义输入回调
         let inputProc: AudioConverterComplexInputDataProc = { (
@@ -225,24 +225,42 @@ class AACAudioDecoder {
             return noErr
         }
 
-        // 执行转换
+        // 使用 withUnsafeMutableBytes 确保指针生命周期正确
+        var finalOutputSize = 0
         var inputDataCopy = inputData
-        let status = AudioConverterFillComplexBuffer(
-            converter,
-            inputProc,
-            &inputDataCopy,
-            &ioOutputDataPacketSize,
-            &outputBufferList,
-            nil
-        )
+        let status = outputBuffer.withUnsafeMutableBytes { bufferPointer -> OSStatus in
+            // 创建输出缓冲区列表
+            var outputBufferList = AudioBufferList()
+            outputBufferList.mNumberBuffers = 1
+            outputBufferList.mBuffers.mNumberChannels = channels
+            outputBufferList.mBuffers.mDataByteSize = UInt32(maxOutputSize)
+            outputBufferList.mBuffers.mData = bufferPointer.baseAddress
+
+            var ioOutputDataPacketSize: UInt32 = UInt32(maxOutputSize / 2) // 采样点数
+
+            // 执行转换 - 使用 withUnsafeMutablePointer 来安全地传递 Data 指针
+            let result = withUnsafeMutablePointer(to: &inputDataCopy) { dataPtr in
+                AudioConverterFillComplexBuffer(
+                    converter,
+                    inputProc,
+                    dataPtr,
+                    &ioOutputDataPacketSize,
+                    &outputBufferList,
+                    nil
+                )
+            }
+
+            // 捕获输出大小
+            finalOutputSize = Int(outputBufferList.mBuffers.mDataByteSize)
+            return result
+        }
 
         guard status == noErr else {
             print("[AACAudioDecoder] Decoding failed: \(status)")
             return nil
         }
 
-        let outputSize = Int(outputBufferList.mBuffers.mDataByteSize)
-        return Data(bytes: outputBuffer, count: outputSize)
+        return Data(bytes: outputBuffer, count: finalOutputSize)
     }
 
     deinit {
