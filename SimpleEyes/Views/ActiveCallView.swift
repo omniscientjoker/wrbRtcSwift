@@ -11,13 +11,8 @@ struct ActiveCallView: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            if viewModel.isPiPMode {
-                // 画中画模式：只显示远程视频
-                PiPModeView(viewModel: viewModel)
-            } else {
-                // 正常模式：显示双方视频
-                NormalModeView(viewModel: viewModel)
-            }
+            // 正常模式：显示双方视频
+            NormalModeView(viewModel: viewModel)
 
             // 顶部状态栏
             VStack {
@@ -38,10 +33,8 @@ struct ActiveCallView: View {
         .navigationBarHidden(true)
         .statusBar(hidden: true)
         .onDisappear {
-            // 如果页面消失且还在通话中，结束通话
-            if viewModel.isInCall {
-                viewModel.endCall()
-            }
+            // 页面消失时不结束通话（系统 PiP 会处理）
+            // 只有用户点击挂断按钮才会结束通话
         }
     }
 }
@@ -85,22 +78,6 @@ struct NormalModeView: View {
                 }
                 Spacer()
             }
-        }
-    }
-}
-
-// MARK: - PiP Mode View
-
-/// 画中画模式视图（只显示远程视频）
-struct PiPModeView: View {
-    @ObservedObject var viewModel: VideoCallViewModel
-
-    var body: some View {
-        if let remoteTrack = viewModel.remoteVideoTrack {
-            WebRTCVideoView(videoTrack: remoteTrack)
-                .ignoresSafeArea()
-        } else {
-            PlaceholderView(text: "等待远程视频...")
         }
     }
 }
@@ -256,9 +233,9 @@ struct ControlBar: View {
 
                 // 画中画按钮
                 ControlButton(
-                    icon: "pip",
+                    icon: "pip.enter",
                     label: "画中画",
-                    isActive: viewModel.isPiPMode,
+                    isActive: false,
                     size: .small,
                     action: { viewModel.togglePiPMode() }
                 )

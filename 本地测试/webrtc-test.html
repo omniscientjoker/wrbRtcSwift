@@ -283,14 +283,32 @@
         let localStream = null;
         let myDeviceId = '';
         let targetDeviceId = '';
+        let pendingIceCandidates = [];  // 缓存早期到达的 ICE 候选
 
         // WebRTC 配置
         const rtcConfiguration = {
             iceServers: [
+                // Google STUN 服务器
                 { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'stun:stun1.l.google.com:19302' }
-            ]
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' },
+                { urls: 'stun:stun3.l.google.com:19302' },
+
+                // 备用公共 STUN 服务器
+                { urls: 'stun:stun.stunprotocol.org:3478' },
+                { urls: 'stun:stun.services.mozilla.com:3478' },
+
+                // TURN 服务器（解决多网络接口问题）
+                {
+                    urls: 'turn:192.168.1.50:3478',  // 替换为实际IP
+                    username: 'test',
+                    credential: 'test123'
+                }
+            ],
+            iceCandidatePoolSize: 10  // 增加候选池大小
         };
+
+        console.log('✅ WebRTC 配置:', rtcConfiguration.iceServers.length, '个 ICE 服务器');
 
         // DOM 元素
         const serverUrlInput = document.getElementById('serverUrl');
@@ -402,7 +420,7 @@
                 await getLocalStream();
 
                 // 创建 PeerConnection
-                createPeerConnection();
+                await createPeerConnection();
 
                 // 添加本地流到连接
                 localStream.getTracks().forEach(track => {
@@ -480,33 +498,80 @@
         }
 
         // 创建 PeerConnection
-        function createPeerConnection() {
+        async function createPeerConnection() {
             pc = new RTCPeerConnection(rtcConfiguration);
+
+            let candidateCount = 0;
+            let sentCount = 0;
+            let skippedCount = 0;
 
             // ICE 候选事件
             pc.onicecandidate = (event) => {
-                if (event.candidate && targetDeviceId) {
-                    sendMessage({
-                        type: 'ice-candidate',
-                        to: targetDeviceId,
-                        candidate: event.candidate.candidate,
-                        sdpMid: event.candidate.sdpMid,
-                        sdpMLineIndex: event.candidate.sdpMLineIndex
-                    });
-                    log('📡 ICE 候选已发送', 'info');
+                if (event.candidate) {
+                    candidateCount++;
+                    const c = event.candidate.candidate;
+
+                    // 分析候选类型
+                    let candidateType = 'UNKNOWN';
+                    if (c.includes('typ host')) candidateType = 'HOST';
+                    else if (c.includes('typ srflx')) candidateType = 'SRFLX';
+                    else if (c.includes('typ relay')) candidateType = 'RELAY';
+                    else if (c.includes('typ prflx')) candidateType = 'PRFLX';
+
+                    log(`📤 生成 ICE candidate #${candidateCount}: ${candidateType}`, 'info');
+                    log(`   ${c.substring(0, 80)}...`, 'info');
+                    log(`   当前 targetDeviceId = "${targetDeviceId}"`, 'info');
+
+                    if (targetDeviceId) {
+                        sendMessage({
+                            type: 'ice-candidate',
+                            to: targetDeviceId,
+                            candidate: event.candidate.candidate,
+                            sdpMid: event.candidate.sdpMid,
+                            sdpMLineIndex: event.candidate.sdpMLineIndex
+                        });
+                        sentCount++;
+                        log(`📡 ICE 候选已发送到: ${targetDeviceId} (已发送 ${sentCount}/${candidateCount})`, 'success');
+                    } else {
+                        skippedCount++;
+                        log(`⚠️ targetDeviceId 未设置，无法发送 ICE candidate (已跳过 ${skippedCount}/${candidateCount})`, 'warning');
+                    }
+                } else {
+                    log(`✅ ICE gathering 完成 - 总计: ${candidateCount} 个, 已发送: ${sentCount} 个, 跳过: ${skippedCount} 个`, 'success');
                 }
+            };
+
+            // ICE gathering 状态监听
+            pc.onicegatheringstatechange = () => {
+                const states = {
+                    'new': '🆕 新建',
+                    'gathering': '🔍 收集中',
+                    'complete': '✅ 完成'
+                };
+                log(`🧊 ICE gathering 状态: ${states[pc.iceGatheringState] || pc.iceGatheringState}`, 'info');
             };
 
             // 接收远程流
             pc.ontrack = (event) => {
-                log('✅ 收到远程媒体流', 'success');
+                log(`✅ 收到远程媒体流: ${event.track.kind} (${event.track.id})`, 'success');
+                log(`   Stream ID: ${event.streams[0].id}`, 'info');
+                log(`   Tracks count: ${event.streams[0].getTracks().length}`, 'info');
                 remoteVideo.srcObject = event.streams[0];
                 updateStatus('通话中', 'calling');
             };
 
             // 连接状态变化
             pc.onconnectionstatechange = () => {
-                log(`连接状态: ${pc.connectionState}`, 'info');
+                const states = {
+                    'new': '🆕 新建',
+                    'connecting': '🔄 连接中',
+                    'connected': '✅ 已连接',
+                    'disconnected': '⚠️ 断开',
+                    'failed': '❌ 失败',
+                    'closed': '⛔ 关闭'
+                };
+                log(`🔌 连接状态: ${states[pc.connectionState] || pc.connectionState}`, 'info');
+
                 if (pc.connectionState === 'connected') {
                     updateStatus('通话已连接', 'calling');
                 } else if (pc.connectionState === 'failed' || pc.connectionState === 'disconnected') {
@@ -514,24 +579,99 @@
                 }
             };
 
+            // ICE 连接状态变化
+            pc.oniceconnectionstatechange = () => {
+                const states = {
+                    'new': '🆕 NEW',
+                    'checking': '🔍 CHECKING',
+                    'connected': '✅ CONNECTED',
+                    'completed': '✅ COMPLETED',
+                    'failed': '❌ FAILED',
+                    'disconnected': '⚠️ DISCONNECTED',
+                    'closed': '⛔ CLOSED'
+                };
+                log(`🧊 ICE 状态: ${states[pc.iceConnectionState] || pc.iceConnectionState}`, 'info');
+
+                // 失败时打印详细调试信息
+                if (pc.iceConnectionState === 'failed') {
+                    log('❌ ICE 连接失败，诊断信息：', 'error');
+                    log(`   Signaling State: ${pc.signalingState}`, 'error');
+                    log(`   Connection State: ${pc.connectionState}`, 'error');
+                    log(`   ICE Gathering State: ${pc.iceGatheringState}`, 'error');
+
+                    // 获取统计信息
+                    pc.getStats().then(stats => {
+                        let localCandidates = [];
+                        let remoteCandidates = [];
+                        let candidatePairs = [];
+
+                        stats.forEach(report => {
+                            if (report.type === 'local-candidate') {
+                                localCandidates.push(report);
+                            } else if (report.type === 'remote-candidate') {
+                                remoteCandidates.push(report);
+                            } else if (report.type === 'candidate-pair') {
+                                candidatePairs.push(report);
+                            }
+                        });
+
+                        log(`   本地 candidates: ${localCandidates.length} 个`, 'error');
+                        localCandidates.forEach((c, i) => {
+                            log(`      #${i+1}: ${c.candidateType} ${c.address || c.ip}:${c.port} protocol=${c.protocol}`, 'error');
+                        });
+
+                        log(`   远程 candidates: ${remoteCandidates.length} 个`, 'error');
+                        remoteCandidates.forEach((c, i) => {
+                            log(`      #${i+1}: ${c.candidateType} ${c.address || c.ip}:${c.port} protocol=${c.protocol}`, 'error');
+                        });
+
+                        log(`   Candidate pairs: ${candidatePairs.length} 个`, 'error');
+                        candidatePairs.forEach((p, i) => {
+                            log(`      #${i+1}: state=${p.state} ${p.localCandidateId} → ${p.remoteCandidateId}`, 'error');
+                        });
+                    });
+                }
+            };
+
             log('✅ PeerConnection 已创建', 'success');
+        }
+
+        // 添加所有缓存的 ICE 候选（必须在 setRemoteDescription 之后调用）
+        async function addPendingIceCandidates() {
+            if (pendingIceCandidates.length > 0) {
+                log(`📦 发现 ${pendingIceCandidates.length} 个缓存的 ICE 候选，正在添加...`, 'info');
+                for (const candidateData of pendingIceCandidates) {
+                    try {
+                        await pc.addIceCandidate({
+                            candidate: candidateData.candidate,
+                            sdpMid: candidateData.sdpMid,
+                            sdpMLineIndex: candidateData.sdpMLineIndex
+                        });
+                        log(`✅ 缓存候选已添加: ${candidateData.sdpMid}:${candidateData.sdpMLineIndex}`, 'success');
+                    } catch (error) {
+                        log(`❌ 添加缓存候选失败: ${error.message}`, 'error');
+                    }
+                }
+                log(`✅ 所有缓存候选已处理完毕`, 'success');
+                pendingIceCandidates = [];  // 清空缓存
+            }
         }
 
         // 处理信令消息
         async function handleSignalingMessage(data) {
             switch (data.type) {
                 case 'incoming-call':
-                    // 收到来电
-                    log(`📞 收到来电: ${data.from}`, 'success');
+                    // 收到来电 - 不立即接听，等待 offer 时再初始化
+                    log(`📞 收到来电通知: ${data.from}`, 'info');
                     targetDeviceId = data.from;
+                    log(`   已设置 targetDeviceId = ${targetDeviceId}`, 'info');
 
-                    if (confirm(`收到来自 ${data.from} 的视频通话请求，是否接听？`)) {
-                        await answerCall();
-                    }
+                    // 显示通知但不弹出confirm（会导致重复初始化）
+                    updateStatus(`来自 ${data.from} 的视频通话`, 'calling');
                     break;
 
                 case 'offer':
-                    // 收到 offer
+                    // 收到 offer - 在这里统一初始化
                     log('📨 收到 Offer', 'info');
                     await handleOffer(data);
                     break;
@@ -568,7 +708,7 @@
                 updateStatus('正在接听...', 'calling');
 
                 await getLocalStream();
-                createPeerConnection();
+                await createPeerConnection();
 
                 localStream.getTracks().forEach(track => {
                     pc.addTrack(track, localStream);
@@ -583,39 +723,109 @@
 
         // 处理 Offer
         async function handleOffer(data) {
-            if (!pc) {
-                await answerCall();
+            log(`📥 收到 Offer from: ${data.from}`, 'info');
+            log(`   SDP length: ${data.sdp ? data.sdp.length : 0}`, 'info');
+            log(`   当前 targetDeviceId (接收前) = "${targetDeviceId}"`, 'info');
+
+            // 设置远程设备ID
+            if (data.from) {
+                targetDeviceId = data.from;
+                log(`   ✅ 设置 targetDeviceId = "${targetDeviceId}"`, 'success');
+            } else {
+                log(`   ⚠️ data.from 为空！`, 'warning');
             }
 
-            await pc.setRemoteDescription({
-                type: 'offer',
-                sdp: data.sdp
-            });
+            try {
+                // 只在第一次初始化
+                if (!pc) {
+                    log(`   初始化本地媒体和 PeerConnection... (targetDeviceId = "${targetDeviceId}")`, 'info');
 
-            const answer = await pc.createAnswer();
-            await pc.setLocalDescription(answer);
+                    // 获取本地媒体流
+                    await getLocalStream();
+                    log(`   ✅ 本地媒体流已获取 (targetDeviceId = "${targetDeviceId}")`, 'success');
 
-            sendMessage({
-                type: 'answer',
-                to: data.from,
-                sdp: answer.sdp
-            });
+                    // 创建 PeerConnection
+                    await createPeerConnection();
+                    log(`   ✅ PeerConnection 已创建 (targetDeviceId = "${targetDeviceId}")`, 'success');
 
-            log('✅ Answer 已发送', 'success');
+                    // 添加本地轨道
+                    localStream.getTracks().forEach(track => {
+                        pc.addTrack(track, localStream);
+                    });
+                    log('   ✅ 本地轨道已添加', 'success');
+
+                    // 更新按钮状态
+                    callBtn.disabled = true;
+                    hangupBtn.disabled = false;
+                } else {
+                    log('   ⚠️ PeerConnection 已存在，跳过初始化', 'warning');
+                }
+
+                // 设置远程描述
+                await pc.setRemoteDescription({
+                    type: 'offer',
+                    sdp: data.sdp
+                });
+                log('✅ Remote Description (offer) 已设置', 'success');
+
+                // 添加所有缓存的 ICE 候选（必须在 setRemoteDescription 之后）
+                await addPendingIceCandidates();
+
+                // 创建 Answer
+                const answer = await pc.createAnswer();
+                log(`✅ Answer 已创建, SDP length: ${answer.sdp.length}`, 'success');
+
+                // 设置本地描述（这会触发 ICE gathering）
+                log(`⏳ 准备设置 Local Description，targetDeviceId = "${targetDeviceId}"`, 'info');
+                await pc.setLocalDescription(answer);
+                log(`✅ Local Description (answer) 已设置，ICE gathering 已启动 (targetDeviceId = "${targetDeviceId}")`, 'success');
+
+                // 发送 Answer
+                sendMessage({
+                    type: 'answer',
+                    to: data.from,
+                    sdp: answer.sdp
+                });
+
+                log(`📤 Answer 已发送到: ${data.from} (targetDeviceId = "${targetDeviceId}")`, 'success');
+            } catch (error) {
+                log(`❌ 处理 Offer 失败: ${error.message}`, 'error');
+                console.error('handleOffer error:', error);
+            }
         }
 
         // 处理 Answer
         async function handleAnswer(data) {
-            await pc.setRemoteDescription({
-                type: 'answer',
-                sdp: data.sdp
-            });
-            log('✅ Answer 已应用', 'success');
+            log(`📥 收到 Answer`, 'info');
+            log(`   SDP length: ${data.sdp ? data.sdp.length : 0}`, 'info');
+
+            try {
+                await pc.setRemoteDescription({
+                    type: 'answer',
+                    sdp: data.sdp
+                });
+                log('✅ Remote Description (answer) 已设置', 'success');
+
+                // 添加所有缓存的 ICE 候选（必须在 setRemoteDescription 之后）
+                await addPendingIceCandidates();
+            } catch (error) {
+                log(`❌ 设置 Answer 失败: ${error.message}`, 'error');
+                console.error('handleAnswer error:', error);
+            }
         }
 
         // 处理 ICE 候选
         async function handleIceCandidate(data) {
+            log(`📡 收到 ICE candidate: ${data.sdpMid}:${data.sdpMLineIndex}`, 'info');
+
             try {
+                if (!pc) {
+                    // PeerConnection 还未创建，缓存候选
+                    pendingIceCandidates.push(data);
+                    log(`⚠️ PeerConnection 不存在，候选已缓存 (缓存数: ${pendingIceCandidates.length})`, 'warning');
+                    return;
+                }
+
                 await pc.addIceCandidate({
                     candidate: data.candidate,
                     sdpMid: data.sdpMid,
@@ -624,6 +834,7 @@
                 log('✅ ICE 候选已添加', 'success');
             } catch (error) {
                 log(`❌ 添加 ICE 候选失败: ${error.message}`, 'error');
+                console.error('handleIceCandidate error:', error, data);
             }
         }
 

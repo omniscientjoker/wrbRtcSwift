@@ -32,11 +32,13 @@ class VideoCallViewModel: ObservableObject {
     @Published var isVideoEnabled: Bool = true
     @Published var isLocalVideoLarge: Bool = false  // true: 本地视频大屏，false: 远程视频大屏
     @Published var isPiPMode: Bool = false  // 画中画模式
+    @Published var shouldMinimizeToPiP: Bool = false  // 是否应该最小化到画中画
 
     // MARK: - Private Properties
 
     private var videoCallManager: VideoCallManager?
     private var cancellables = Set<AnyCancellable>()
+    private var pipManager: PictureInPictureManager?
 
     // MARK: - Computed Properties
 
@@ -71,6 +73,16 @@ class VideoCallViewModel: ObservableObject {
     init() {
         // 加载本地设备ID
         localDeviceId = getLocalDeviceId()
+
+        // 初始化画中画管理器
+        pipManager = PictureInPictureManager()
+
+        // 监听远端视频轨道变化
+        $remoteVideoTrack
+            .sink { [weak self] track in
+                self?.pipManager?.setupWithVideoTrack(track)
+            }
+            .store(in: &cancellables)
     }
 
     // MARK: - Public Methods
@@ -274,8 +286,26 @@ class VideoCallViewModel: ObservableObject {
 
     /// 切换画中画模式
     func togglePiPMode() {
-        isPiPMode.toggle()
-        print("[VideoCallViewModel] PiP mode \(isPiPMode ? "enabled" : "disabled")")
+        guard let pipManager = pipManager else {
+            print("[VideoCallViewModel] PiP manager not available")
+            return
+        }
+
+        if pipManager.isPiPActive {
+            // 停止画中画
+            pipManager.stopPictureInPicture()
+        } else {
+            // 开始画中画
+            pipManager.startPictureInPicture()
+        }
+    }
+
+    /// 从画中画恢复到全屏
+    func restoreFromPiP() {
+        pipManager?.stopPictureInPicture()
+        isPiPMode = false
+        shouldMinimizeToPiP = false
+        print("[VideoCallViewModel] Restored from PiP mode")
     }
 
     // MARK: - Private Methods
@@ -419,6 +449,9 @@ class VideoCallViewModel: ObservableObject {
     }
 
     private func cleanup() {
+        // 清理画中画
+        pipManager?.cleanup()
+
         // 清理视频轨道
         localVideoTrack = nil
         remoteVideoTrack = nil
@@ -432,6 +465,7 @@ class VideoCallViewModel: ObservableObject {
         isVideoEnabled = true
         isLocalVideoLarge = false
         isPiPMode = false
+        shouldMinimizeToPiP = false
 
         // 不清空 videoCallManager，保持信令连接以接收新的来电
         // videoCallManager 只在用户主动断开连接时清理
