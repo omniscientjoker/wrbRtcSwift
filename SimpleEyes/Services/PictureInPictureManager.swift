@@ -17,12 +17,18 @@ class PictureInPictureManager: NSObject, ObservableObject {
     private var sampleBufferDisplayLayer: AVSampleBufferDisplayLayer?
     private var videoTrack: RTCVideoTrack?
     private var videoRenderer: WebRTCPiPVideoRenderer?
+    private var pipPossibleObservation: NSKeyValueObservation?
 
     // MARK: - Initialization
 
     override init() {
         super.init()
-        setupAudioSession()
+        // 不需要配置音频会话，WebRTC 已经管理了音频会话
+        // setupAudioSession()
+    }
+
+    deinit {
+        pipPossibleObservation?.invalidate()
     }
 
     // MARK: - Public Methods
@@ -32,13 +38,24 @@ class PictureInPictureManager: NSObject, ObservableObject {
         // 移除旧的渲染器
         if let oldTrack = self.videoTrack, let oldRenderer = self.videoRenderer {
             oldTrack.remove(oldRenderer)
+            self.videoRenderer = nil
         }
 
         self.videoTrack = track
-        setupPictureInPicture()
+
+        // 只有在有视频轨道时才设置 PiP
+        guard let track = track else {
+            print("[PiPManager] No video track, skipping PiP setup")
+            return
+        }
+
+        // 设置 PiP（如果还没有设置）
+        if pipController == nil {
+            setupPictureInPicture()
+        }
 
         // 添加新的渲染器
-        if let track = track, let layer = sampleBufferDisplayLayer {
+        if let layer = sampleBufferDisplayLayer {
             let renderer = WebRTCPiPVideoRenderer(sampleBufferDisplayLayer: layer)
             track.add(renderer)
             self.videoRenderer = renderer
@@ -73,6 +90,10 @@ class PictureInPictureManager: NSObject, ObservableObject {
             track.remove(renderer)
         }
 
+        // 移除观察者
+        pipPossibleObservation?.invalidate()
+        pipPossibleObservation = nil
+
         pipController = nil
         sampleBufferDisplayLayer = nil
         videoTrack = nil
@@ -82,21 +103,28 @@ class PictureInPictureManager: NSObject, ObservableObject {
 
     // MARK: - Private Methods
 
-    private func setupAudioSession() {
-        do {
-            let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.playback, mode: .videoChat, options: [])
-            try audioSession.setActive(true)
-            print("[PiPManager] Audio session configured")
-        } catch {
-            print("[PiPManager] Failed to configure audio session: \(error)")
-        }
-    }
-
     private func setupPictureInPicture() {
         // 创建 AVSampleBufferDisplayLayer
         let displayLayer = AVSampleBufferDisplayLayer()
         displayLayer.videoGravity = .resizeAspect
+
+        // 设置 control time base（对于实时流很重要）
+        var timebase: CMTimebase?
+        let status = CMTimebaseCreateWithSourceClock(
+            allocator: kCFAllocatorDefault,
+            sourceClock: CMClockGetHostTimeClock(),
+            timebaseOut: &timebase
+        )
+
+        if status == noErr, let timebase = timebase {
+            displayLayer.controlTimebase = timebase
+            CMTimebaseSetTime(timebase, time: .zero)
+            CMTimebaseSetRate(timebase, rate: 1.0)
+            print("[PiPManager] Control timebase configured")
+        } else {
+            print("[PiPManager] Failed to create control timebase: \(status)")
+        }
+
         self.sampleBufferDisplayLayer = displayLayer
 
         // 检查 PiP 是否支持
@@ -117,6 +145,16 @@ class PictureInPictureManager: NSObject, ObservableObject {
 
         self.pipController = controller
         self.isPiPPossible = controller.isPictureInPicturePossible
+
+        // 观察 isPictureInPicturePossible 的变化
+        pipPossibleObservation = controller.observe(\.isPictureInPicturePossible, options: [.new]) { [weak self] controller, change in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                let newValue = change.newValue ?? false
+                self.isPiPPossible = newValue
+                print("[PiPManager] PiP possible changed to: \(newValue)")
+            }
+        }
 
         print("[PiPManager] PiP controller created, possible: \(controller.isPictureInPicturePossible)")
     }

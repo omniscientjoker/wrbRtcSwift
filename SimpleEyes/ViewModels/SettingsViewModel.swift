@@ -26,10 +26,13 @@ class SettingsViewModel: ObservableObject {
 
     @Published var showingSaveAlert = false
     @Published var showingResetAlert = false
+    @Published var showingServerPicker = false
+    @Published var selectedServer: DiscoveredServer?
 
     // MARK: - Private Properties
 
     private var cancellables = Set<AnyCancellable>()
+    private(set) var discoveryService = ServerDiscoveryService()
 
     // MARK: - Initialization
 
@@ -58,5 +61,25 @@ class SettingsViewModel: ObservableObject {
 
     func requestReset() {
         showingResetAlert = true
+    }
+
+    /// 开始扫描局域网服务器
+    func startServerDiscovery() {
+        discoveryService.startScanning()
+        showingServerPicker = true
+    }
+
+    /// 停止扫描
+    func stopServerDiscovery() {
+        discoveryService.stopScanning()
+    }
+
+    /// 选择发现的服务器
+    func selectServer(_ server: DiscoveredServer) {
+        selectedServer = server
+        apiServerURL = server.apiURL
+        wsServerURL = server.wsURL
+        showingServerPicker = false
+        print("[Settings] Selected server: \(server.displayName)")
     }
 }

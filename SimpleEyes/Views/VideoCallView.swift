@@ -5,18 +5,37 @@ struct VideoCallView: View {
     @StateObject private var viewModel = VideoCallViewModel()
     @State private var hasLoaded = false
     @State private var navigateToActiveCall = false
+    @State private var isViewActive = false
 
     var body: some View {
         ZStack {
             // 空闲界面（设备选择）
             Color.white.ignoresSafeArea()
-            CallIdleView(viewModel: viewModel, hasLoaded: $hasLoaded)
+
+            if isViewActive {
+                CallIdleView(viewModel: viewModel, hasLoaded: $hasLoaded)
+            } else {
+                // 显示加载指示器
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .scaleEffect(1.5)
+            }
         }
         .fullScreenCover(isPresented: $navigateToActiveCall) {
             ActiveCallView(viewModel: viewModel)
         }
         .navigationTitle("视频通话")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            // 延迟激活视图，避免立即执行耗时操作
+            if !isViewActive {
+                Task {
+                    // 短暂延迟，让 TabView 切换动画完成
+                    try? await Task.sleep(nanoseconds: 100_000_000) // 0.1秒
+                    isViewActive = true
+                }
+            }
+        }
         .onChange(of: viewModel.callState) { newState in
             // 当进入通话状态时，自动跳转到通话页面
             switch newState {
@@ -63,7 +82,13 @@ struct CallIdleView: View {
         .onAppear {
             if !hasLoaded {
                 hasLoaded = true
-                viewModel.loadOnlineDevices()
+                // 延迟加载设备列表，避免阻塞 UI
+                Task {
+                    try? await Task.sleep(nanoseconds: 300_000_000) // 0.3秒
+                    await MainActor.run {
+                        viewModel.loadOnlineDevices()
+                    }
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ class WebRTCPiPVideoRenderer: NSObject, RTCVideoRenderer {
 
     private let sampleBufferDisplayLayer: AVSampleBufferDisplayLayer
     private var pixelBufferPool: CVPixelBufferPool?
+    private var hasRenderedFirstFrame = false
 
     // MARK: - Initialization
 
@@ -27,11 +28,13 @@ class WebRTCPiPVideoRenderer: NSObject, RTCVideoRenderer {
 
         // 将 RTCVideoFrame 转换为 CVPixelBuffer
         guard let pixelBuffer = convertToPixelBuffer(frame) else {
+            print("[PiPRenderer] Failed to convert frame to pixel buffer")
             return
         }
 
         // 创建 CMSampleBuffer
         guard let sampleBuffer = createSampleBuffer(from: pixelBuffer, presentationTime: Int64(frame.timeStamp)) else {
+            print("[PiPRenderer] Failed to create sample buffer")
             return
         }
 
@@ -39,9 +42,16 @@ class WebRTCPiPVideoRenderer: NSObject, RTCVideoRenderer {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             if self.sampleBufferDisplayLayer.status == .failed {
+                print("[PiPRenderer] Display layer failed, flushing...")
                 self.sampleBufferDisplayLayer.flush()
             }
             self.sampleBufferDisplayLayer.enqueue(sampleBuffer)
+
+            // 第一帧渲染时输出日志
+            if !self.hasRenderedFirstFrame {
+                print("[PiPRenderer] First frame rendered successfully")
+                self.hasRenderedFirstFrame = true
+            }
         }
     }
 
