@@ -19,7 +19,7 @@
                             <!-- App Icon/Logo -->
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eye.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="app-icon">
                                 <rect key="frame" x="146.66666666666666" y="351" width="100" height="100"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" name="LaunchTintColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="icon-width"/>
                                     <constraint firstAttribute="height" constant="100" id="icon-height"/>
@@ -30,7 +30,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SimpleEyes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="app-name">
                                 <rect key="frame" x="40" y="471" width="313" height="36"/>
                                 <fontDescription key="fontDescription" type="system" weight="bold" pointSize="30"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" name="LaunchPrimaryTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
 
@@ -38,7 +38,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="智能监控，尽在掌握" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tagline">
                                 <rect key="frame" x="40" y="519" width="313" height="20"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
-                                <color key="textColor" red="0.8" green="0.8" blue="0.8" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" name="LaunchSecondaryTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
 
@@ -46,12 +46,12 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="版本 1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="version">
                                 <rect key="frame" x="40" y="778" width="313" height="16"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
-                                <color key="textColor" red="0.6" green="0.6" blue="0.6" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" name="LaunchSecondaryTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.1215686275" green="0.1294117647" blue="0.1411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="LaunchBackgroundColor"/>
                         <constraints>
                             <!-- Icon Constraints -->
                             <constraint firstItem="app-icon" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="icon-centerX"/>
@@ -84,5 +84,17 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <image name="eye.circle.fill" catalog="system" width="128" height="123"/>
+        <namedColor name="LaunchBackgroundColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="LaunchPrimaryTextColor">
+            <color red="0.122" green="0.129" blue="0.141" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="LaunchSecondaryTextColor">
+            <color red="0.4" green="0.4" blue="0.4" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="LaunchTintColor">
+            <color red="0.122" green="0.129" blue="0.141" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
