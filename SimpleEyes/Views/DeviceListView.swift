@@ -37,6 +37,7 @@ struct DeviceListView: View {
                 }
             }
             .navigationTitle("设备列表")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: viewModel.refresh) {
@@ -49,6 +50,13 @@ struct DeviceListView: View {
                     viewModel.loadDevices()
                 }
             }
+            .basePage(
+                title: "设备清单",
+                parameters: [
+                    "deviceId": "",
+                    "from": "main_tab"
+                ]
+            )
         }
     }
 }

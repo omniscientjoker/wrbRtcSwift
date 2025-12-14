@@ -6,20 +6,16 @@ import AVKit
 struct ActiveCallView: View {
     @ObservedObject var viewModel: VideoCallViewModel
     @Environment(\.dismiss) private var dismiss
-
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-
             // 正常模式：显示双方视频
             NormalModeView(viewModel: viewModel)
-
             // 顶部状态栏
             VStack {
                 TopStatusBar(viewModel: viewModel, dismiss: dismiss)
                 Spacer()
             }
-
             // 底部控制栏
             VStack {
                 Spacer()
@@ -27,24 +23,25 @@ struct ActiveCallView: View {
                     viewModel.endCall()
                     dismiss()
                 })
-                .padding(.bottom, 40)
+                .padding(.bottom, 20)
             }
         }
         .navigationBarHidden(true)
         .statusBar(hidden: true)
-        .onDisappear {
-            // 页面消失时不结束通话（系统 PiP 会处理）
-            // 只有用户点击挂断按钮才会结束通话
-        }
+        .onDisappear {}
+        .basePage(
+            title: "视频通话中",
+            parameters: [
+                "deviceId": "",
+                "from": "main_tab"
+            ]
+        )
     }
 }
-
-// MARK: - Normal Mode View
 
 /// 正常模式视图（显示双方视频）
 struct NormalModeView: View {
     @ObservedObject var viewModel: VideoCallViewModel
-
     var body: some View {
         ZStack {
             // 大屏视频（背景）

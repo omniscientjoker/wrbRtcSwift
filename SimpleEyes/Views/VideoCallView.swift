@@ -6,12 +6,10 @@ struct VideoCallView: View {
     @State private var hasLoaded = false
     @State private var navigateToActiveCall = false
     @State private var isViewActive = false
-
     var body: some View {
         ZStack {
             // 空闲界面（设备选择）
             Color.white.ignoresSafeArea()
-
             if isViewActive {
                 CallIdleView(viewModel: viewModel, hasLoaded: $hasLoaded)
             } else {
@@ -57,22 +55,26 @@ struct VideoCallView: View {
                 Text("来自设备: \(from)")
             }
         }
+        .basePage(
+            title: "视频通话",
+            parameters: [
+                "deviceId": "",
+                "from": "main_tab"
+            ]
+        )
     }
 }
 
-// MARK: - Call Idle View (设备选择)
 
+// MARK: - Call Idle View (设备选择)
 struct CallIdleView: View {
     @ObservedObject var viewModel: VideoCallViewModel
     @Binding var hasLoaded: Bool
-
     var body: some View {
         VStack(spacing: 20) {
             // 信令连接控制区域
             SignalingConnectionSection(viewModel: viewModel)
-
             Divider()
-
             // 设备选择区域
             DeviceSelectionSection(viewModel: viewModel)
 
@@ -94,8 +96,8 @@ struct CallIdleView: View {
     }
 }
 
-// MARK: - Signaling Connection Section
 
+// MARK: - Signaling Connection Section
 struct SignalingConnectionSection: View {
     @ObservedObject var viewModel: VideoCallViewModel
     @State private var editingDeviceId: String = ""
@@ -193,8 +195,8 @@ struct SignalingConnectionSection: View {
     }
 }
 
-// MARK: - Device Selection Section
 
+// MARK: - Device Selection Section
 struct DeviceSelectionSection: View {
     @ObservedObject var viewModel: VideoCallViewModel
 

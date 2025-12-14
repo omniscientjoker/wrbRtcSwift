@@ -20,39 +20,38 @@ struct IntercomView: View {
             if case .idle = viewModel.intercomStatus {
                 DeviceSelectionView(viewModel: viewModel)
             }
-
             // 状态显示
             IntercomStatusView(viewModel: viewModel)
-
             // 控制按钮
             IntercomControlButtons(viewModel: viewModel)
-
             // 提示信息
             IntercomTipsView()
-
             Spacer()
         }
         .padding(.top)
         .navigationTitle("语音对讲")
         .navigationBarTitleDisplayMode(.inline)
+        .basePage(
+            title: "音频通话",
+            parameters: [
+                "deviceId": "",
+                "from": "main_tab"
+            ]
+        )
     }
 }
 
 // MARK: - Subviews
-
 struct DeviceSelectionView: View {
     @ObservedObject var viewModel: IntercomViewModel
     @State private var hasLoaded = false
-
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("选择设备")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
-
                 Spacer()
-
                 // 刷新按钮
                 Button(action: {
                     viewModel.loadOnlineDevices()
@@ -65,7 +64,6 @@ struct DeviceSelectionView: View {
                 }
                 .disabled(viewModel.isLoadingDevices)
             }
-
             // 设备选择器
             if viewModel.isLoadingDevices {
                 HStack {

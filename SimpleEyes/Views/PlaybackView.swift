@@ -93,6 +93,13 @@ struct PlaybackInputSection: View {
         .background(Color(.systemGray6))
         .cornerRadius(12)
         .padding(.horizontal)
+        .basePage(
+            title: "视频回放",
+            parameters: [
+                "deviceId": "",
+                "from": "main_tab"
+            ]
+        )
     }
 }
 

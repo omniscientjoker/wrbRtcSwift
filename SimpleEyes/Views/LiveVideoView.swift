@@ -30,6 +30,13 @@ struct LiveVideoView: View {
         }
         .navigationTitle("视频直播")
         .navigationBarTitleDisplayMode(.inline)
+        .basePage(
+            title: "实时视频",
+            parameters: [
+                "deviceId": "",
+                "from": "main_tab"
+            ]
+        )
     }
 }
 
