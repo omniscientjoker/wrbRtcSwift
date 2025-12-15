@@ -14,6 +14,15 @@
 		FA092C3E2EEE597500CAB434 /* PageLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C392EEE597500CAB434 /* PageLogView.swift */; };
 		FA092C4C2EEEF14E00CAB434 /* NavigationBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C4B2EEEF14E00CAB434 /* NavigationBarModifier.swift */; };
 		FA092C652EEFA2E800CAB434 /* ColorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C642EEFA2DD00CAB434 /* ColorUtils.swift */; };
+		FA092C6A2EEFB38900CAB434 /* WindowOverlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C672EEFB38900CAB434 /* WindowOverlayManager.swift */; };
+		FA092C6C2EEFB83800CAB434 /* ServerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C6B2EEFB83800CAB434 /* ServerPickerView.swift */; };
+		FA092C6E2EEFBA8900CAB434 /* BonjourServerDiscoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C6D2EEFBA8900CAB434 /* BonjourServerDiscoveryService.swift */; };
+		FA092C702EEFD4A900CAB434 /* MulticastServerDiscoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C6F2EEFD4A900CAB434 /* MulticastServerDiscoveryService.swift */; };
+		FA092C722EEFD4CA00CAB434 /* ServerDiscoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C712EEFD4CA00CAB434 /* ServerDiscoveryService.swift */; };
+		FA6700F52EEFD54F00588415 /* HybridServerDiscoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6700F42EEFD54F00588415 /* HybridServerDiscoveryService.swift */; };
+		FA6700FA2EEFD9D600588415 /* paused.json in Resources */ = {isa = PBXBuildFile; fileRef = FA6700F62EEFD9D600588415 /* paused.json */; };
+		FA6700FB2EEFD9D600588415 /* scanning.json in Resources */ = {isa = PBXBuildFile; fileRef = FA6700F72EEFD9D600588415 /* scanning.json */; };
+		FA6700FD2EEFDA0100588415 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6700FC2EEFDA0100588415 /* LottieView.swift */; };
 		FA8E2F462EE9756A001CA5DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F422EE9756A001CA5DE /* ContentView.swift */; };
 		FA8E2F472EE9756A001CA5DE /* SimpleEyesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F432EE9756A001CA5DE /* SimpleEyesApp.swift */; };
 		FA8E2F482EE9756A001CA5DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8E2F412EE9756A001CA5DE /* Assets.xcassets */; };
@@ -46,7 +55,6 @@
 		FA8E2FFE2EEA924B001CA5DE /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2FFD2EEA924B001CA5DE /* PermissionManager.swift */; };
 		FA97491A2EEC1F8800FC625D /* PictureInPictureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9749182EEC1F8800FC625D /* PictureInPictureManager.swift */; };
 		FA97491B2EEC1F8800FC625D /* WebRTCPiPVideoRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9749192EEC1F8800FC625D /* WebRTCPiPVideoRenderer.swift */; };
-		FAD74AA82EED3AC900956CE9 /* ServerDiscoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD74AA72EED3AC900956CE9 /* ServerDiscoveryService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +67,15 @@
 		FA092C3A2EEE597500CAB434 /* PageTrackingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTrackingModifier.swift; sourceTree = "<group>"; };
 		FA092C4B2EEEF14E00CAB434 /* NavigationBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarModifier.swift; sourceTree = "<group>"; };
 		FA092C642EEFA2DD00CAB434 /* ColorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorUtils.swift; sourceTree = "<group>"; };
+		FA092C672EEFB38900CAB434 /* WindowOverlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowOverlayManager.swift; sourceTree = "<group>"; };
+		FA092C6B2EEFB83800CAB434 /* ServerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPickerView.swift; sourceTree = "<group>"; };
+		FA092C6D2EEFBA8900CAB434 /* BonjourServerDiscoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonjourServerDiscoveryService.swift; sourceTree = "<group>"; };
+		FA092C6F2EEFD4A900CAB434 /* MulticastServerDiscoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticastServerDiscoveryService.swift; sourceTree = "<group>"; };
+		FA092C712EEFD4CA00CAB434 /* ServerDiscoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDiscoveryService.swift; sourceTree = "<group>"; };
+		FA6700F42EEFD54F00588415 /* HybridServerDiscoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HybridServerDiscoveryService.swift; sourceTree = "<group>"; };
+		FA6700F62EEFD9D600588415 /* paused.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = paused.json; sourceTree = "<group>"; };
+		FA6700F72EEFD9D600588415 /* scanning.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = scanning.json; sourceTree = "<group>"; };
+		FA6700FC2EEFDA0100588415 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		FA8E2F162EE97502001CA5DE /* SimpleEyes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleEyes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA8E2F412EE9756A001CA5DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA8E2F422EE9756A001CA5DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -92,7 +109,6 @@
 		FA8E2FFD2EEA924B001CA5DE /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		FA9749182EEC1F8800FC625D /* PictureInPictureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureInPictureManager.swift; sourceTree = "<group>"; };
 		FA9749192EEC1F8800FC625D /* WebRTCPiPVideoRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCPiPVideoRenderer.swift; sourceTree = "<group>"; };
-		FAD74AA72EED3AC900956CE9 /* ServerDiscoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDiscoveryService.swift; sourceTree = "<group>"; };
 		FAD74AA92EED3FE000956CE9 /* SimpleEyes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SimpleEyes.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -180,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				FA8E2FE42EEA9241001CA5DE /* WebRTCClient.swift */,
-				FAD74AA72EED3AC900956CE9 /* ServerDiscoveryService.swift */,
 				FA8E2FE52EEA9241001CA5DE /* WebRTCSignalingService.swift */,
 				FA9749192EEC1F8800FC625D /* WebRTCPiPVideoRenderer.swift */,
 			);
@@ -234,6 +249,7 @@
 			children = (
 				FA092C5D2EEF9A9700CAB434 /* views */,
 				FA092C5E2EEF9AA200CAB434 /* viewModel */,
+				FA092C662EEFAD7E00CAB434 /* services */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -242,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				FA8E2F5A2EEA4F6E001CA5DE /* SettingsView.swift */,
+				FA092C6B2EEFB83800CAB434 /* ServerPickerView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -293,6 +310,51 @@
 				FA8E2FE12EEA9232001CA5DE /* VideoCallManager.swift */,
 			);
 			path = manager;
+			sourceTree = "<group>";
+		};
+		FA092C662EEFAD7E00CAB434 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				FA092C712EEFD4CA00CAB434 /* ServerDiscoveryService.swift */,
+				FA6700F42EEFD54F00588415 /* HybridServerDiscoveryService.swift */,
+				FA092C6D2EEFBA8900CAB434 /* BonjourServerDiscoveryService.swift */,
+				FA092C6F2EEFD4A900CAB434 /* MulticastServerDiscoveryService.swift */,
+			);
+			path = services;
+			sourceTree = "<group>";
+		};
+		FA092C682EEFB38900CAB434 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				FA6700FC2EEFDA0100588415 /* LottieView.swift */,
+				FA092C672EEFB38900CAB434 /* WindowOverlayManager.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		FA092C692EEFB38900CAB434 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				FA092C682EEFB38900CAB434 /* UI */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		FA6700F82EEFD9D600588415 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				FA6700F62EEFD9D600588415 /* paused.json */,
+				FA6700F72EEFD9D600588415 /* scanning.json */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
+		FA6700F92EEFD9D600588415 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FA6700F82EEFD9D600588415 /* Animations */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		FA8E2F0D2EE97502001CA5DE = {
@@ -378,10 +440,12 @@
 		FA8E2F442EE9756A001CA5DE /* SimpleEyes */ = {
 			isa = PBXGroup;
 			children = (
+				FA6700F92EEFD9D600588415 /* Resources */,
+				FA092C692EEFB38900CAB434 /* Common */,
+				FA8E2F402EE9756A001CA5DE /* Utils */,
 				FA092C342EEE51EF00CAB434 /* Modifier */,
 				FA8E2F3A2EE9756A001CA5DE /* Modules */,
 				FA8E2F3F2EE9756A001CA5DE /* Services */,
-				FA8E2F402EE9756A001CA5DE /* Utils */,
 				FA8E2F412EE9756A001CA5DE /* Assets.xcassets */,
 				FA8E2F422EE9756A001CA5DE /* ContentView.swift */,
 				FA8E2F432EE9756A001CA5DE /* SimpleEyesApp.swift */,
@@ -492,6 +556,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA8E2F482EE9756A001CA5DE /* Assets.xcassets in Resources */,
+				FA6700FA2EEFD9D600588415 /* paused.json in Resources */,
+				FA6700FB2EEFD9D600588415 /* scanning.json in Resources */,
 				D8FAFA364F2C5135E6D57581 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -554,13 +620,15 @@
 				FA8E2FFC2EEA9241001CA5DE /* IntercomAudioService.swift in Sources */,
 				FA8E2FED2EEA9241001CA5DE /* Models.swift in Sources */,
 				FA092C4C2EEEF14E00CAB434 /* NavigationBarModifier.swift in Sources */,
+				FA6700F52EEFD54F00588415 /* HybridServerDiscoveryService.swift in Sources */,
 				FA8E2FBD2EEA9184001CA5DE /* WebRTCVideoView.swift in Sources */,
+				FA092C702EEFD4A900CAB434 /* MulticastServerDiscoveryService.swift in Sources */,
 				FA8E2FBE2EEA9184001CA5DE /* VideoCallView.swift in Sources */,
 				FA8E2FBF2EEA9185001CA5DE /* ActiveCallView.swift in Sources */,
-				FAD74AA82EED3AC900956CE9 /* ServerDiscoveryService.swift in Sources */,
 				FA8E2F622EEA4FD4001CA5DE /* IntercomManager.swift in Sources */,
 				FA8E2F462EE9756A001CA5DE /* ContentView.swift in Sources */,
 				FA8E2F5C2EEA4F6E001CA5DE /* DeviceListView.swift in Sources */,
+				FA092C6A2EEFB38900CAB434 /* WindowOverlayManager.swift in Sources */,
 				FA8E2F5D2EEA4F6E001CA5DE /* IntercomView.swift in Sources */,
 				FA8E2FE32EEA9232001CA5DE /* VideoCallManager.swift in Sources */,
 				FA8E2FFE2EEA924B001CA5DE /* PermissionManager.swift in Sources */,
@@ -571,6 +639,7 @@
 				FA092C362EEE588000CAB434 /* PageLogger.swift in Sources */,
 				FA8E2F602EEA4F6E001CA5DE /* SettingsView.swift in Sources */,
 				FA8E2F802EEA57ED001CA5DE /* DeviceListViewModel.swift in Sources */,
+				FA092C722EEFD4CA00CAB434 /* ServerDiscoveryService.swift in Sources */,
 				FA8E2F812EEA57ED001CA5DE /* IntercomViewModel.swift in Sources */,
 				FA8E2F822EEA57ED001CA5DE /* LiveVideoViewModel.swift in Sources */,
 				FA8E2F832EEA57ED001CA5DE /* PlaybackViewModel.swift in Sources */,
@@ -580,10 +649,13 @@
 				FA092C652EEFA2E800CAB434 /* ColorUtils.swift in Sources */,
 				FA8E2FE82EEA9241001CA5DE /* WebRTCSignalingService.swift in Sources */,
 				FA8E2FE02EEA9229001CA5DE /* VideoCallViewModel.swift in Sources */,
+				FA6700FD2EEFDA0100588415 /* LottieView.swift in Sources */,
+				FA092C6C2EEFB83800CAB434 /* ServerPickerView.swift in Sources */,
 				FA8E2FF62EEA9241001CA5DE /* VideoCaptureService.swift in Sources */,
 				FA97491A2EEC1F8800FC625D /* PictureInPictureManager.swift in Sources */,
 				FA97491B2EEC1F8800FC625D /* WebRTCPiPVideoRenderer.swift in Sources */,
 				FA8E2FF72EEA9241001CA5DE /* VideoPlayerView.swift in Sources */,
+				FA092C6E2EEFBA8900CAB434 /* BonjourServerDiscoveryService.swift in Sources */,
 				FA8E2F842EEA57ED001CA5DE /* SettingsViewModel.swift in Sources */,
 				FA8E2F472EE9756A001CA5DE /* SimpleEyesApp.swift in Sources */,
 			);
@@ -739,6 +811,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -785,6 +858,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

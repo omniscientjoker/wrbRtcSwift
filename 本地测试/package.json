@@ -1,0 +1,32 @@
+{
+  "name": "simpleeyes-webrtc-signaling-server",
+  "version": "1.0.0",
+  "description": "SimpleEyes WebRTC 信令服务器 - 支持双向音视频通话和 Bonjour 自动发现",
+  "main": "webrtc-signaling-server.js",
+  "scripts": {
+    "start": "node webrtc-signaling-server.js",
+    "dev": "nodemon webrtc-signaling-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webrtc",
+    "signaling",
+    "websocket",
+    "bonjour",
+    "mdns",
+    "video-call",
+    "audio-call"
+  ],
+  "author": "SimpleEyes Team",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.18.0",
+    "bonjour": "^3.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

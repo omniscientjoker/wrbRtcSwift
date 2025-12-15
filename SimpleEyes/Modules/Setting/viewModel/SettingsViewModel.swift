@@ -48,7 +48,7 @@ class SettingsViewModel: ObservableObject {
     /// 是否显示重置确认提示
     @Published var showingResetAlert = false
 
-    /// 是否显示服务器选择器
+    /// 是否显示服务器选择器弹框
     @Published var showingServerPicker = false
 
     /// 选中的发现服务器
@@ -59,10 +59,10 @@ class SettingsViewModel: ObservableObject {
     /// Combine 订阅集合
     private var cancellables = Set<AnyCancellable>()
 
-    /// 服务器发现服务
+    /// 服务器发现服务（混合模式：Bonjour + Multicast）
     ///
-    /// 用于扫描局域网中的信令服务器
-    private(set) var discoveryService = ServerDiscoveryService()
+    /// 同时使用 Bonjour 和 UDP Multicast 自动发现局域网中的信令服务器
+    @Published var discoveryService = HybridServerDiscoveryService()
 
     // MARK: - 初始化
 
@@ -73,6 +73,11 @@ class SettingsViewModel: ObservableObject {
     init() {
         self.apiServerURL = UserDefaults.standard.string(forKey: "apiServerURL") ?? APIConfig.baseURL
         self.wsServerURL = UserDefaults.standard.string(forKey: "wsServerURL") ?? APIConfig.wsURL
+
+        // 订阅 discoveryService 的变化，触发 UI 更新
+        discoveryService.objectWillChange.sink { [weak self] _ in
+            self?.objectWillChange.send()
+        }.store(in: &cancellables)
     }
 
     // MARK: - 计算属性
@@ -113,10 +118,10 @@ class SettingsViewModel: ObservableObject {
 
     /// 开始扫描局域网服务器
     ///
-    /// 启动 mDNS/Bonjour 服务发现
-    /// 并显示服务器选择器界面
+    /// 启动混合服务发现（Bonjour + Multicast）
+    /// 设置状态标志显示服务器选择器
     func startServerDiscovery() {
-        discoveryService.startScanning()
+        discoveryService.startDiscovery()
         showingServerPicker = true
     }
 
@@ -124,18 +129,45 @@ class SettingsViewModel: ObservableObject {
     ///
     /// 停止服务器发现扫描
     func stopServerDiscovery() {
-        discoveryService.stopScanning()
+        discoveryService.stopDiscovery()
+    }
+
+    /// 暂停扫描
+    ///
+    /// 暂停服务器发现扫描（保持当前进度）
+    func pauseServerDiscovery() {
+        discoveryService.pauseScanning()
+    }
+
+    /// 恢复扫描
+    ///
+    /// 从暂停状态恢复扫描
+    func resumeServerDiscovery() {
+        discoveryService.resumeScanning()
     }
 
     /// 选择发现的服务器
     ///
-    /// 将发现的服务器地址应用到配置
+    /// 将发现的服务器地址应用到配置、停止扫描并关闭选择器
     /// - Parameter server: 选中的服务器信息
     func selectServer(_ server: DiscoveredServer) {
         selectedServer = server
         apiServerURL = server.apiURL
         wsServerURL = server.wsURL
+
+        // 停止服务发现
+        stopServerDiscovery()
+
         showingServerPicker = false
         print("[Settings] Selected server: \(server.displayName)")
+        print("[Settings] Stopped server discovery")
+    }
+
+    /// 取消服务器选择
+    ///
+    /// 关闭服务器选择器并停止扫描
+    func cancelServerSelection() {
+        showingServerPicker = false
+        stopServerDiscovery()
     }
 }

@@ -6,8 +6,17 @@
 
 const WebSocket = require('ws');
 const http = require('http');
+const dgram = require('dgram');
+const os = require('os');
+const bonjour = require('bonjour')();
 
 const PORT = 8080;
+const SERVER_NAME = 'SimpleEyes WebRTC 信令服务器';
+
+// Multicast 配置
+const MULTICAST_ADDRESS = '239.255.255.250';
+const MULTICAST_PORT = 12345;
+const MULTICAST_INTERVAL = 5000; // 每 5 秒广播一次
 
 // 创建 HTTP 服务器
 const server = http.createServer((req, res) => {
@@ -21,6 +30,18 @@ const server = http.createServer((req, res) => {
     if (req.method === 'OPTIONS') {
         res.writeHead(200);
         res.end();
+        return;
+    }
+
+    // API: 健康检查（用于服务器发现）
+    if (req.url === '/api/health' && req.method === 'GET') {
+        res.writeHead(200);
+        res.end(JSON.stringify({
+            name: 'SimpleEyes WebRTC 信令服务器',
+            status: 'ok',
+            port: PORT,
+            clients: clients.size
+        }));
         return;
     }
 
@@ -235,6 +256,99 @@ function broadcastDeviceStatus(deviceId, status) {
     }
 }
 
+// 获取本地 IP 地址
+function getLocalIPAddress() {
+    const interfaces = os.networkInterfaces();
+
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            // 跳过内部地址和非 IPv4 地址
+            if (iface.family === 'IPv4' && !iface.internal) {
+                // 优先返回局域网地址
+                if (iface.address.startsWith('192.168.') ||
+                    iface.address.startsWith('10.') ||
+                    iface.address.startsWith('172.')) {
+                    return iface.address;
+                }
+            }
+        }
+    }
+
+    return 'localhost';
+}
+
+// UDP Multicast 广播
+let multicastSocket = null;
+let multicastIntervalId = null;
+
+function startMulticastBroadcast() {
+    const localIP = getLocalIPAddress();
+
+    // 创建 UDP socket
+    multicastSocket = dgram.createSocket('udp4');
+
+    // 配置 socket
+    multicastSocket.bind(() => {
+        try {
+            multicastSocket.setBroadcast(true);
+            multicastSocket.setMulticastTTL(128);
+            multicastSocket.addMembership(MULTICAST_ADDRESS);
+
+            console.log('📡 UDP Multicast 广播已启动:');
+            console.log(`   多播地址: ${MULTICAST_ADDRESS}:${MULTICAST_PORT}`);
+            console.log(`   广播间隔: ${MULTICAST_INTERVAL}ms`);
+            console.log(`   本地IP: ${localIP}`);
+            console.log('');
+        } catch (error) {
+            console.log('⚠️  Multicast 配置错误:', error.message);
+        }
+    });
+
+    // 定期广播服务器信息
+    const broadcastMessage = () => {
+        const message = JSON.stringify({
+            name: SERVER_NAME,
+            host: localIP,
+            port: PORT,
+            apiURL: `http://${localIP}:${PORT}`,
+            wsURL: `ws://${localIP}:${PORT}`,
+            timestamp: Date.now()
+        });
+
+        const buffer = Buffer.from(message);
+
+        multicastSocket.send(buffer, 0, buffer.length, MULTICAST_PORT, MULTICAST_ADDRESS, (error) => {
+            if (error) {
+                console.log('⚠️  Multicast 发送错误:', error.message);
+            }
+        });
+    };
+
+    // 立即发送一次
+    setTimeout(broadcastMessage, 1000);
+
+    // 启动定时广播
+    multicastIntervalId = setInterval(broadcastMessage, MULTICAST_INTERVAL);
+}
+
+function stopMulticastBroadcast() {
+    if (multicastIntervalId) {
+        clearInterval(multicastIntervalId);
+        multicastIntervalId = null;
+    }
+
+    if (multicastSocket) {
+        try {
+            multicastSocket.dropMembership(MULTICAST_ADDRESS);
+            multicastSocket.close();
+        } catch (error) {
+            // Ignore errors during cleanup
+        }
+        multicastSocket = null;
+        console.log('✅ UDP Multicast 广播已停止');
+    }
+}
+
 // 启动服务器
 server.listen(PORT, () => {
     console.log('╔══════════════════════════════════════════════════════════╗');
@@ -248,6 +362,37 @@ server.listen(PORT, () => {
     console.log(`📱 在线设备列表 API: http://localhost:${PORT}/api/devices/online`);
     console.log(`🎥 支持双向音视频通话（WebRTC）`);
     console.log('');
+
+    // 发布 Bonjour 服务（用于局域网自动发现）
+    bonjourServiceInstance = bonjour.publish({
+        name: SERVER_NAME,
+        type: 'simpleyes',
+        port: PORT,
+        txt: {
+            apiPort: String(PORT),
+            wsPort: String(PORT),
+            name: SERVER_NAME,
+            version: '1.0.0'
+        }
+    });
+
+    console.log('📡 Bonjour 服务已发布:');
+    console.log(`   服务名称: ${SERVER_NAME}`);
+    console.log(`   服务类型: _simpleyes._tcp`);
+    console.log(`   端口: ${PORT}`);
+    console.log(`   ✅ iOS 客户端现在可以自动发现此服务器`);
+    console.log('');
+
+    bonjourServiceInstance.on('up', () => {
+        console.log('✅ Bonjour 服务已上线');
+    });
+
+    bonjourServiceInstance.on('error', (error) => {
+        console.log('⚠️  Bonjour 服务错误:', error.message);
+    });
+
+    // 启动 UDP Multicast 广播
+    startMulticastBroadcast();
 });
 
 // 定期显示连接状态
@@ -263,8 +408,21 @@ setInterval(() => {
 }, 30000); // 每30秒显示一次
 
 // 优雅退出
+let bonjourServiceInstance = null;
+
 process.on('SIGINT', () => {
     console.log('\n\n👋 正在关闭服务器...');
+
+    // 停止 UDP Multicast 广播
+    stopMulticastBroadcast();
+
+    // 停止 Bonjour 服务
+    if (bonjourServiceInstance) {
+        bonjourServiceInstance.stop();
+        console.log('✅ Bonjour 服务已停止');
+    }
+    bonjour.destroy();
+
     wss.close(() => {
         server.close(() => {
             console.log('✅ 服务器已关闭');

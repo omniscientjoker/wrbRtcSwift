@@ -51,9 +51,6 @@ struct SettingsView: View {
                     "from": "main_tab"
                 ]
             )
-            .sheet(isPresented: $viewModel.showingServerPicker) {
-                ServerPickerView(viewModel: viewModel)
-            }
             .alert("保存成功", isPresented: $viewModel.showingSaveAlert) {
                 Button("确定", role: .cancel) { }
             } message: {
@@ -66,6 +63,21 @@ struct SettingsView: View {
                 }
             } message: {
                 Text("确定要恢复默认服务器配置吗？")
+            }
+            .onChange(of: viewModel.showingServerPicker) { showing in
+                if showing {
+                    // 在 View 层调用 UI 组件
+                    WindowOverlayManager.shared.showDialog(
+                        maskConfig: MaskConfig(onMaskTap: nil)
+                    ) {
+                        ServerPickerView(viewModel: viewModel)
+                            .frame(width: min(UIScreen.main.bounds.width - 40, 500))
+                            .frame(height: min(UIScreen.main.bounds.height * 0.7, 600))
+                    }
+                } else {
+                    // 关闭弹框
+                    WindowOverlayManager.shared.hide()
+                }
             }
         }
     }
@@ -161,30 +173,51 @@ struct ServerDiscoverySection: View {
             }
             .disabled(viewModel.discoveryService.isScanning)
 
-            if let selected = viewModel.selectedServer {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("已选服务器")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    Text(selected.displayName)
-                        .font(.subheadline)
-                        .foregroundColor(.primary)
+            // 显示已发现的服务器列表
+            if !viewModel.discoveryService.discoveredServers.isEmpty {
+                ForEach(viewModel.discoveryService.discoveredServers) { server in
+                    Button(action: {
+                        viewModel.selectServer(server)
+                    }) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(server.name)
+                                    .font(.subheadline)
+                                    .foregroundColor(.primary)
+                                Text("\(server.host):\(server.port)")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                            if viewModel.selectedServer?.id == server.id {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                            }
+                        }
+                    }
                 }
-                .padding(.vertical, 4)
             }
         } header: {
             Text("服务器发现")
         } footer: {
             if viewModel.discoveryService.isScanning {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("正在扫描局域网...")
+                    HStack {
+                        Text("正在扫描局域网...")
+                        Spacer()
+                        if !viewModel.discoveryService.discoveredServers.isEmpty {
+                            Text("已发现 \(viewModel.discoveryService.discoveredServers.count) 个")
+                                .foregroundColor(.green)
+                        }
+                    }
                     ProgressView(value: viewModel.discoveryService.scanProgress)
                         .progressViewStyle(.linear)
-                    Text("进度: \(Int(viewModel.discoveryService.scanProgress * 100))%")
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
                 }
                 .padding(.vertical, 4)
+            } else if !viewModel.discoveryService.discoveredServers.isEmpty {
+                Text("扫描完成，发现 \(viewModel.discoveryService.discoveredServers.count) 个服务器")
+                    .font(.caption)
+                    .foregroundColor(.green)
             } else {
                 Text("点击扫描按钮查找局域网内的信令服务器")
                     .font(.caption)
@@ -283,142 +316,7 @@ struct AboutSection: View {
     }
 }
 
-// MARK: - 服务器选择器视图
 
-/// 服务器选择器视图
-///
-/// 以模态方式展示服务器发现结果，允许用户选择服务器
-/// 功能包括：
-/// - 显示扫描进度
-/// - 展示发现的服务器列表
-/// - 服务器选择和确认
-/// - 重新扫描功能
-struct ServerPickerView: View {
-
-    // MARK: - 属性
-
-    /// 设置视图模型（观察者模式）
-    @ObservedObject var viewModel: SettingsViewModel
-
-    /// 关闭模态视图的环境变量
-    @Environment(\.dismiss) private var dismiss
-
-    // MARK: - 视图布局
-
-    /// 构建服务器选择器视图
-    ///
-    /// 根据扫描状态显示不同内容：
-    /// - 扫描中：显示进度指示器
-    /// - 未发现：显示提示信息
-    /// - 已发现：显示服务器列表供选择
-    /// - Returns: 返回服务器选择器视图
-    var body: some View {
-        NavigationView {
-            List {
-                if viewModel.discoveryService.isScanning {
-                    Section {
-                        VStack(spacing: 16) {
-                            ProgressView()
-                                .scaleEffect(1.5)
-                            Text("正在扫描局域网...")
-                                .font(.headline)
-                            ProgressView(value: viewModel.discoveryService.scanProgress)
-                                .progressViewStyle(.linear)
-                            Text("\(Int(viewModel.discoveryService.scanProgress * 100))%")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 40)
-                    }
-                } else if viewModel.discoveryService.discoveredServers.isEmpty {
-                    Section {
-                        VStack(spacing: 12) {
-                            Image(systemName: "wifi.exclamationmark")
-                                .font(.system(size: 48))
-                                .foregroundColor(.orange)
-                            Text("未发现服务器")
-                                .font(.headline)
-                            Text("请确保服务器已启动并连接到同一局域网")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                                .multilineTextAlignment(.center)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 40)
-                    }
-                } else {
-                    Section {
-                        ForEach(viewModel.discoveryService.discoveredServers) { server in
-                            Button(action: {
-                                viewModel.selectServer(server)
-                            }) {
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text(server.name)
-                                        .font(.headline)
-                                        .foregroundColor(.primary)
-
-                                    HStack {
-                                        Image(systemName: "network")
-                                            .font(.caption)
-                                        Text("\(server.host):\(server.port)")
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-                                    }
-
-                                    HStack(spacing: 12) {
-                                        Label(server.apiURL, systemImage: "link")
-                                            .font(.caption2)
-                                            .lineLimit(1)
-                                        Label(server.wsURL, systemImage: "cable.connector")
-                                            .font(.caption2)
-                                            .lineLimit(1)
-                                    }
-                                    .foregroundColor(.blue)
-                                }
-                                .padding(.vertical, 4)
-                            }
-                        }
-                    } header: {
-                        HStack {
-                            Text("发现 \(viewModel.discoveryService.discoveredServers.count) 个服务器")
-                            Spacer()
-                            Button("重新扫描") {
-                                viewModel.startServerDiscovery()
-                            }
-                            .font(.caption)
-                        }
-                    }
-                }
-            }
-            .navigationBar(
-                title: "选择服务器",
-                displayMode: .inline,
-                trackingParameters: [
-                    "discoveredServerCount": viewModel.discoveryService.discoveredServers.count,
-                    "isScanning": viewModel.discoveryService.isScanning,
-                    "from": "settings"
-                ]
-            )
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    if viewModel.discoveryService.isScanning {
-                        Button("停止") {
-                            viewModel.stopServerDiscovery()
-                        }
-                    }
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("关闭") {
-                        viewModel.stopServerDiscovery()
-                        dismiss()
-                    }
-                }
-            }
-        }
-    }
-}
 
 // MARK: - 预览
 

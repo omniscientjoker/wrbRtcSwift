@@ -37,13 +37,6 @@ struct ContentView: View {
     /// - Returns: 返回包含所有功能模块的标签视图
     var body: some View {
         TabView(selection: $selectedTab) {
-            // 设备列表（已注释，暂未使用）
-//            DeviceListView()
-//                .tabItem {
-//                    Label("设备", systemImage: "video.circle.fill")
-//                }
-//                .tag(0)
-
             // 视频直播模块
             // 提供快速访问监控设备实时视频流功能
             QuickLiveView()

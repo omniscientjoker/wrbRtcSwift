@@ -20,6 +20,9 @@ target 'SimpleEyes' do
   # WebRTC (使用官方维护的版本)
   pod 'WebRTC-SDK', '~> 114.0'
 
+  # Lottie Animation
+  pod 'lottie-ios', '~> 4.3'
+
 end
 
 # 统一设置所有 Pod 的部署目标
