@@ -171,8 +171,7 @@ class APIClient {
     ///   - completion: 完成回调
     ///     - Success: 返回 `PlaybackListResponse` 包含录像列表和总数
     ///     - Failure: 返回 `APIError` 错误类型
-    func getPlaybackList(deviceId: String, date: String? = nil,
-                        completion: @escaping (Result<PlaybackListResponse, APIError>) -> Void) {
+    func getPlaybackList(deviceId: String, date: String? = nil,completion: @escaping (Result<PlaybackListResponse, APIError>) -> Void) {
         var url = "\(APIConfig.baseURL)/api/video/playback/\(deviceId)"
         if let date = date {
             url += "?date=\(date)"
@@ -201,8 +200,7 @@ class APIClient {
     ///     - Failure: 返回 `APIError` 错误类型
     ///
     /// - Note: 转码参数固定为 1280x720 分辨率，2000k 码率，25fps
-    func startLiveTranscode(deviceId: String, inputUrl: String,
-                           completion: @escaping (Result<TranscodeResponse, APIError>) -> Void) {
+    func startLiveTranscode(deviceId: String, inputUrl: String,completion: @escaping (Result<TranscodeResponse, APIError>) -> Void) {
         let url = "\(APIConfig.baseURL)/api/video/live/\(deviceId)/start"
         let parameters: [String: Any] = [
             "inputUrl": inputUrl,
@@ -267,5 +265,33 @@ class APIClient {
                 completion(.failure(.networkError(error)))
             }
         }
+    }
+    
+    // MARK: - Example Usage
+
+    /// 使用新网络服务的示例方法
+    ///
+    /// 演示如何使用 NetworkServiceV2 发起请求
+    func exampleQueryUserInfo() async throws {
+        // 1. 获取服务实例
+        let service = NetworkService.shared
+
+        // 2. 配置请求
+        let config = NetworkRequestConfig.builder()
+            .requiresAuth(true)                   // 需要认证
+            .enableLogging(true, level: .info)    // 启用日志
+            .enableCache(true, ttl: 300)          // 启用缓存，5分钟有效期
+            .enableDebounce(true, delay: 0.5)     // 启用防抖
+            .autoRetry(true, maxCount: 3)         // 自动重试3次
+            .timeout(30)                          // 30秒超时
+            .build()
+
+        // 3. 发起请求并获取原始数据
+        let user = try await service.request(
+            url: "https://api.example.com/users",
+            method: .get,
+            responseType: [UserInfo].self,
+            config: config
+        )
     }
 }

@@ -8,6 +8,30 @@
 
 @preconcurrency import Foundation
 
+/// 设备列表响应模型
+///
+/// API 返回的设备列表数据结构
+struct UserInfo: Codable, Sendable {
+    let userId: String
+    let name: String
+    let model: String
+    let userType: String?
+
+    var id: String { userId }
+
+    enum CodingKeys: String, CodingKey {
+        case userId, name, model, userType
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        userId = try container.decode(String.self, forKey: .userId)
+        name = try container.decode(String.self, forKey: .name)
+        model = try container.decode(String.self, forKey: .model)
+        userType = try container.decodeIfPresent(String.self, forKey: .userType)
+    }
+}
+
 // MARK: - Device Models
 
 /// 设备信息模型
