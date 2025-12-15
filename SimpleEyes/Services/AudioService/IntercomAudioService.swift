@@ -1,8 +1,41 @@
+//
+//  IntercomAudioService.swift
+//  SimpleEyes
+//
+//  对讲音频服务 - 负责实时音频采集和播放
+//  使用 AVAudioEngine 实现低延迟音频处理
+//
+
 import Foundation
 import AVFoundation
 
 /// 对讲音频服务
-/// 负责音频采集和播放
+///
+/// 提供实时音频采集和播放功能，用于语音对讲
+///
+/// ## 功能特性
+/// - 低延迟音频采集（20ms缓冲）
+/// - 实时格式转换（PCM Int16, 16kHz, 单声道）
+/// - 音频播放
+/// - 自动音频会话管理
+/// - 异步处理避免阻塞
+///
+/// ## 音频参数
+/// - 采样率：16kHz
+/// - 位深度：16-bit
+/// - 声道数：单声道
+/// - 缓冲时长：20ms
+///
+/// ## 使用示例
+/// ```swift
+/// let audioService = IntercomAudioService()
+/// audioService.onAudioCaptured = { data in
+///     // 发送音频数据
+/// }
+/// try audioService.startCapture()
+/// // 播放接收到的音频
+/// audioService.playAudio(pcmData: receivedData)
+/// ```
 class IntercomAudioService {
 
     // MARK: - Properties

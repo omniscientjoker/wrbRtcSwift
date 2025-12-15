@@ -15,6 +15,8 @@
 		FA092C3C2EEE597500CAB434 /* PageTrackingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C3A2EEE597500CAB434 /* PageTrackingModifier.swift */; };
 		FA092C3D2EEE597500CAB434 /* CombinedBaseModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C382EEE597500CAB434 /* CombinedBaseModifier.swift */; };
 		FA092C3E2EEE597500CAB434 /* PageLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C392EEE597500CAB434 /* PageLogView.swift */; };
+		FA092C492EEEED6400CAB434 /* NavigationBarConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C462EEEED6400CAB434 /* NavigationBarConfig.swift */; };
+		FA092C4C2EEEF14E00CAB434 /* UnifiedNavigationBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA092C4B2EEEF14E00CAB434 /* UnifiedNavigationBarModifier.swift */; };
 		FA8E2F462EE9756A001CA5DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F422EE9756A001CA5DE /* ContentView.swift */; };
 		FA8E2F472EE9756A001CA5DE /* SimpleEyesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F432EE9756A001CA5DE /* SimpleEyesApp.swift */; };
 		FA8E2F482EE9756A001CA5DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8E2F412EE9756A001CA5DE /* Assets.xcassets */; };
@@ -24,9 +26,6 @@
 		FA8E2F5F2EEA4F6E001CA5DE /* PlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F592EEA4F6E001CA5DE /* PlaybackView.swift */; };
 		FA8E2F602EEA4F6E001CA5DE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F5A2EEA4F6E001CA5DE /* SettingsView.swift */; };
 		FA8E2F622EEA4FD4001CA5DE /* IntercomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F612EEA4FD4001CA5DE /* IntercomManager.swift */; };
-		FA8E2F642EEA4FDF001CA5DE /* PlaybackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F632EEA4FDF001CA5DE /* PlaybackListViewController.swift */; };
-		FA8E2F672EEA4FEB001CA5DE /* DeviceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F662EEA4FEB001CA5DE /* DeviceListViewController.swift */; };
-		FA8E2F682EEA4FEB001CA5DE /* DeviceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F652EEA4FEB001CA5DE /* DeviceDetailViewController.swift */; };
 		FA8E2F802EEA57ED001CA5DE /* DeviceListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F7A2EEA57ED001CA5DE /* DeviceListViewModel.swift */; };
 		FA8E2F812EEA57ED001CA5DE /* IntercomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F7B2EEA57ED001CA5DE /* IntercomViewModel.swift */; };
 		FA8E2F822EEA57ED001CA5DE /* LiveVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F7C2EEA57ED001CA5DE /* LiveVideoViewModel.swift */; };
@@ -64,6 +63,8 @@
 		FA092C382EEE597500CAB434 /* CombinedBaseModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinedBaseModifier.swift; sourceTree = "<group>"; };
 		FA092C392EEE597500CAB434 /* PageLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageLogView.swift; sourceTree = "<group>"; };
 		FA092C3A2EEE597500CAB434 /* PageTrackingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTrackingModifier.swift; sourceTree = "<group>"; };
+		FA092C462EEEED6400CAB434 /* NavigationBarConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarConfig.swift; sourceTree = "<group>"; };
+		FA092C4B2EEEF14E00CAB434 /* UnifiedNavigationBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedNavigationBarModifier.swift; sourceTree = "<group>"; };
 		FA8E2F162EE97502001CA5DE /* SimpleEyes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleEyes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA8E2F412EE9756A001CA5DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA8E2F422EE9756A001CA5DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -74,9 +75,6 @@
 		FA8E2F592EEA4F6E001CA5DE /* PlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackView.swift; sourceTree = "<group>"; };
 		FA8E2F5A2EEA4F6E001CA5DE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		FA8E2F612EEA4FD4001CA5DE /* IntercomManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntercomManager.swift; sourceTree = "<group>"; };
-		FA8E2F632EEA4FDF001CA5DE /* PlaybackListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackListViewController.swift; sourceTree = "<group>"; };
-		FA8E2F652EEA4FEB001CA5DE /* DeviceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDetailViewController.swift; sourceTree = "<group>"; };
-		FA8E2F662EEA4FEB001CA5DE /* DeviceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceListViewController.swift; sourceTree = "<group>"; };
 		FA8E2F7A2EEA57ED001CA5DE /* DeviceListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceListViewModel.swift; sourceTree = "<group>"; };
 		FA8E2F7B2EEA57ED001CA5DE /* IntercomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntercomViewModel.swift; sourceTree = "<group>"; };
 		FA8E2F7C2EEA57ED001CA5DE /* LiveVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveVideoViewModel.swift; sourceTree = "<group>"; };
@@ -133,21 +131,22 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		FA092C342EEE51EF00CAB434 /* viewModifier */ = {
+		FA092C342EEE51EF00CAB434 /* Modifier */ = {
 			isa = PBXGroup;
 			children = (
 				FA092C322EEE4C8800CAB434 /* NavigationBarModifier.swift */,
+				FA092C4B2EEEF14E00CAB434 /* UnifiedNavigationBarModifier.swift */,
 			);
-			path = viewModifier;
+			path = Modifier;
 			sourceTree = "<group>";
 		};
-		FA092C3F2EEE59D300CAB434 /* base */ = {
+		FA092C3F2EEE59D300CAB434 /* Base */ = {
 			isa = PBXGroup;
 			children = (
 				FA092C372EEE597500CAB434 /* BaseViewModifier.swift */,
 				FA092C382EEE597500CAB434 /* CombinedBaseModifier.swift */,
 			);
-			path = base;
+			path = Base;
 			sourceTree = "<group>";
 		};
 		FA092C402EEE59EB00CAB434 /* logUtils */ = {
@@ -158,6 +157,166 @@
 				FA092C3A2EEE597500CAB434 /* PageTrackingModifier.swift */,
 			);
 			path = logUtils;
+			sourceTree = "<group>";
+		};
+		FA092C482EEEED6400CAB434 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				FA092C462EEEED6400CAB434 /* NavigationBarConfig.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		FA092C502EEF95AC00CAB434 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F572EEA4F6E001CA5DE /* IntercomView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		FA092C512EEF95AC00CAB434 /* viewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F7B2EEA57ED001CA5DE /* IntercomViewModel.swift */,
+			);
+			path = viewModel;
+			sourceTree = "<group>";
+		};
+		FA092C522EEF95AC00CAB434 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FEE2EEA9241001CA5DE /* IntercomWebSocketService.swift */,
+				FA8E2FEF2EEA9241001CA5DE /* IntercomWebSocketService_Fallback.swift */,
+			);
+			path = services;
+			sourceTree = "<group>";
+		};
+		FA092C532EEF95DE00CAB434 /* viewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FDF2EEA9229001CA5DE /* VideoCallViewModel.swift */,
+			);
+			path = viewModel;
+			sourceTree = "<group>";
+		};
+		FA092C542EEF95DE00CAB434 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FE42EEA9241001CA5DE /* WebRTCClient.swift */,
+				FAD74AA72EED3AC900956CE9 /* ServerDiscoveryService.swift */,
+				FA8E2FE52EEA9241001CA5DE /* WebRTCSignalingService.swift */,
+				FA9749192EEC1F8800FC625D /* WebRTCPiPVideoRenderer.swift */,
+			);
+			path = services;
+			sourceTree = "<group>";
+		};
+		FA092C552EEF95DE00CAB434 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FBA2EEA9185001CA5DE /* ActiveCallView.swift */,
+				FA8E2FBB2EEA9184001CA5DE /* VideoCallView.swift */,
+				FA8E2FBC2EEA9184001CA5DE /* WebRTCVideoView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		FA092C562EEF95FA00CAB434 /* viewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F7C2EEA57ED001CA5DE /* LiveVideoViewModel.swift */,
+			);
+			path = viewModel;
+			sourceTree = "<group>";
+		};
+		FA092C582EEF95FA00CAB434 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F582EEA4F6E001CA5DE /* LiveVideoView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		FA092C592EEF99F400CAB434 /* viewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F7D2EEA57ED001CA5DE /* PlaybackViewModel.swift */,
+			);
+			path = viewModel;
+			sourceTree = "<group>";
+		};
+		FA092C5B2EEF99F400CAB434 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F592EEA4F6E001CA5DE /* PlaybackView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		FA092C5C2EEF9A8D00CAB434 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				FA092C5D2EEF9A9700CAB434 /* views */,
+				FA092C5E2EEF9AA200CAB434 /* viewModel */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		FA092C5D2EEF9A9700CAB434 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F5A2EEA4F6E001CA5DE /* SettingsView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		FA092C5E2EEF9AA200CAB434 /* viewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F7E2EEA57ED001CA5DE /* SettingsViewModel.swift */,
+			);
+			path = viewModel;
+			sourceTree = "<group>";
+		};
+		FA092C5F2EEF9AFD00CAB434 /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				FA092C612EEF9B1E00CAB434 /* views */,
+				FA092C602EEF9B0500CAB434 /* viewModel */,
+			);
+			path = Device;
+			sourceTree = "<group>";
+		};
+		FA092C602EEF9B0500CAB434 /* viewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F7A2EEA57ED001CA5DE /* DeviceListViewModel.swift */,
+			);
+			path = viewModel;
+			sourceTree = "<group>";
+		};
+		FA092C612EEF9B1E00CAB434 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F562EEA4F6E001CA5DE /* DeviceListView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		FA092C622EEF9E6C00CAB434 /* manager */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2F612EEA4FD4001CA5DE /* IntercomManager.swift */,
+			);
+			path = manager;
+			sourceTree = "<group>";
+		};
+		FA092C632EEF9E8400CAB434 /* manager */ = {
+			isa = PBXGroup;
+			children = (
+				FA8E2FE12EEA9232001CA5DE /* VideoCallManager.swift */,
+			);
+			path = manager;
 			sourceTree = "<group>";
 		};
 		FA8E2F0D2EE97502001CA5DE = {
@@ -181,7 +340,10 @@
 		FA8E2F372EE9756A001CA5DE /* Intercom */ = {
 			isa = PBXGroup;
 			children = (
-				FA8E2F612EEA4FD4001CA5DE /* IntercomManager.swift */,
+				FA092C502EEF95AC00CAB434 /* views */,
+				FA092C522EEF95AC00CAB434 /* services */,
+				FA092C622EEF9E6C00CAB434 /* manager */,
+				FA092C512EEF95AC00CAB434 /* viewModel */,
 			);
 			path = Intercom;
 			sourceTree = "<group>";
@@ -189,26 +351,29 @@
 		FA8E2F382EE9756A001CA5DE /* Playback */ = {
 			isa = PBXGroup;
 			children = (
-				FA8E2F632EEA4FDF001CA5DE /* PlaybackListViewController.swift */,
+				FA092C5B2EEF99F400CAB434 /* views */,
+				FA092C592EEF99F400CAB434 /* viewModel */,
 			);
 			path = Playback;
 			sourceTree = "<group>";
 		};
-		FA8E2F392EE9756A001CA5DE /* Video */ = {
+		FA8E2F392EE9756A001CA5DE /* LiveVideo */ = {
 			isa = PBXGroup;
 			children = (
-				FA8E2F652EEA4FEB001CA5DE /* DeviceDetailViewController.swift */,
-				FA8E2F662EEA4FEB001CA5DE /* DeviceListViewController.swift */,
+				FA092C582EEF95FA00CAB434 /* views */,
+				FA092C562EEF95FA00CAB434 /* viewModel */,
 			);
-			path = Video;
+			path = LiveVideo;
 			sourceTree = "<group>";
 		};
 		FA8E2F3A2EE9756A001CA5DE /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				FA092C5F2EEF9AFD00CAB434 /* Device */,
+				FA092C5C2EEF9A8D00CAB434 /* Setting */,
 				FA8E2F372EE9756A001CA5DE /* Intercom */,
 				FA8E2F382EE9756A001CA5DE /* Playback */,
-				FA8E2F392EE9756A001CA5DE /* Video */,
+				FA8E2F392EE9756A001CA5DE /* LiveVideo */,
 				FA8E2FE22EEA9232001CA5DE /* VideoCall */,
 			);
 			path = Modules;
@@ -220,8 +385,6 @@
 				FA8E2FFA2EEA9241001CA5DE /* AudioService */,
 				FA8E2FEB2EEA9241001CA5DE /* NetworkService */,
 				FA8E2FF52EEA9241001CA5DE /* VideoService */,
-				FA8E2FE62EEA9241001CA5DE /* WebRTCService */,
-				FA8E2FF02EEA9241001CA5DE /* WebSocketService */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -238,10 +401,9 @@
 		FA8E2F442EE9756A001CA5DE /* SimpleEyes */ = {
 			isa = PBXGroup;
 			children = (
-				FA092C3F2EEE59D300CAB434 /* base */,
-				FA092C342EEE51EF00CAB434 /* viewModifier */,
-				FA8E2F7F2EEA57ED001CA5DE /* ViewModels */,
-				FA8E2F5B2EEA4F6E001CA5DE /* Views */,
+				FA092C3F2EEE59D300CAB434 /* Base */,
+				FA092C482EEEED6400CAB434 /* Config */,
+				FA092C342EEE51EF00CAB434 /* Modifier */,
 				FA8E2F3A2EE9756A001CA5DE /* Modules */,
 				FA8E2F3F2EE9756A001CA5DE /* Services */,
 				FA8E2F402EE9756A001CA5DE /* Utils */,
@@ -254,51 +416,15 @@
 			path = SimpleEyes;
 			sourceTree = "<group>";
 		};
-		FA8E2F5B2EEA4F6E001CA5DE /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				FA8E2F562EEA4F6E001CA5DE /* DeviceListView.swift */,
-				FA8E2F572EEA4F6E001CA5DE /* IntercomView.swift */,
-				FA8E2F582EEA4F6E001CA5DE /* LiveVideoView.swift */,
-				FA8E2F592EEA4F6E001CA5DE /* PlaybackView.swift */,
-				FA8E2F5A2EEA4F6E001CA5DE /* SettingsView.swift */,
-				FA8E2FBA2EEA9185001CA5DE /* ActiveCallView.swift */,
-				FA8E2FBB2EEA9184001CA5DE /* VideoCallView.swift */,
-				FA8E2FBC2EEA9184001CA5DE /* WebRTCVideoView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		FA8E2F7F2EEA57ED001CA5DE /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				FA8E2F7A2EEA57ED001CA5DE /* DeviceListViewModel.swift */,
-				FA8E2F7B2EEA57ED001CA5DE /* IntercomViewModel.swift */,
-				FA8E2FDF2EEA9229001CA5DE /* VideoCallViewModel.swift */,
-				FA8E2F7C2EEA57ED001CA5DE /* LiveVideoViewModel.swift */,
-				FA8E2F7D2EEA57ED001CA5DE /* PlaybackViewModel.swift */,
-				FA8E2F7E2EEA57ED001CA5DE /* SettingsViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		FA8E2FE22EEA9232001CA5DE /* VideoCall */ = {
 			isa = PBXGroup;
 			children = (
-				FA8E2FE12EEA9232001CA5DE /* VideoCallManager.swift */,
+				FA092C552EEF95DE00CAB434 /* views */,
+				FA092C542EEF95DE00CAB434 /* services */,
+				FA092C632EEF9E8400CAB434 /* manager */,
+				FA092C532EEF95DE00CAB434 /* viewModel */,
 			);
 			path = VideoCall;
-			sourceTree = "<group>";
-		};
-		FA8E2FE62EEA9241001CA5DE /* WebRTCService */ = {
-			isa = PBXGroup;
-			children = (
-				FA8E2FE42EEA9241001CA5DE /* WebRTCClient.swift */,
-				FAD74AA72EED3AC900956CE9 /* ServerDiscoveryService.swift */,
-				FA8E2FE52EEA9241001CA5DE /* WebRTCSignalingService.swift */,
-				FA9749192EEC1F8800FC625D /* WebRTCPiPVideoRenderer.swift */,
-			);
-			path = WebRTCService;
 			sourceTree = "<group>";
 		};
 		FA8E2FEB2EEA9241001CA5DE /* NetworkService */ = {
@@ -308,15 +434,6 @@
 				FA8E2FEA2EEA9241001CA5DE /* Models.swift */,
 			);
 			path = NetworkService;
-			sourceTree = "<group>";
-		};
-		FA8E2FF02EEA9241001CA5DE /* WebSocketService */ = {
-			isa = PBXGroup;
-			children = (
-				FA8E2FEE2EEA9241001CA5DE /* IntercomWebSocketService.swift */,
-				FA8E2FEF2EEA9241001CA5DE /* IntercomWebSocketService_Fallback.swift */,
-			);
-			path = WebSocketService;
 			sourceTree = "<group>";
 		};
 		FA8E2FF52EEA9241001CA5DE /* VideoService */ = {
@@ -462,7 +579,7 @@
 				FA092C332EEE4C8800CAB434 /* NavigationBarModifier.swift in Sources */,
 				FA8E2FFC2EEA9241001CA5DE /* IntercomAudioService.swift in Sources */,
 				FA8E2FED2EEA9241001CA5DE /* Models.swift in Sources */,
-				FA8E2F642EEA4FDF001CA5DE /* PlaybackListViewController.swift in Sources */,
+				FA092C4C2EEEF14E00CAB434 /* UnifiedNavigationBarModifier.swift in Sources */,
 				FA8E2FBD2EEA9184001CA5DE /* WebRTCVideoView.swift in Sources */,
 				FA8E2FBE2EEA9184001CA5DE /* VideoCallView.swift in Sources */,
 				FA8E2FBF2EEA9185001CA5DE /* ActiveCallView.swift in Sources */,
@@ -478,6 +595,7 @@
 				FA092C3B2EEE597500CAB434 /* BaseViewModifier.swift in Sources */,
 				FA092C3C2EEE597500CAB434 /* PageTrackingModifier.swift in Sources */,
 				FA092C3D2EEE597500CAB434 /* CombinedBaseModifier.swift in Sources */,
+				FA092C492EEEED6400CAB434 /* NavigationBarConfig.swift in Sources */,
 				FA092C3E2EEE597500CAB434 /* PageLogView.swift in Sources */,
 				FA092C362EEE588000CAB434 /* PageLogger.swift in Sources */,
 				FA8E2F602EEA4F6E001CA5DE /* SettingsView.swift in Sources */,
@@ -495,8 +613,6 @@
 				FA97491B2EEC1F8800FC625D /* WebRTCPiPVideoRenderer.swift in Sources */,
 				FA8E2FF72EEA9241001CA5DE /* VideoPlayerView.swift in Sources */,
 				FA8E2F842EEA57ED001CA5DE /* SettingsViewModel.swift in Sources */,
-				FA8E2F672EEA4FEB001CA5DE /* DeviceListViewController.swift in Sources */,
-				FA8E2F682EEA4FEB001CA5DE /* DeviceDetailViewController.swift in Sources */,
 				FA8E2F472EE9756A001CA5DE /* SimpleEyesApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

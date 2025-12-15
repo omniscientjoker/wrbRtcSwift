@@ -3,6 +3,7 @@
 //  SimpleEyes
 //
 //  视频采集服务 - 使用 AVCaptureSession
+//  提供摄像头视频采集和预览功能
 //
 
 import Foundation
@@ -10,6 +11,30 @@ import AVFoundation
 import UIKit
 
 /// 视频采集服务
+///
+/// 使用 AVFoundation 实现摄像头视频采集
+///
+/// ## 功能特性
+/// - 前后摄像头切换
+/// - 实时视频预览
+/// - 固定帧率和分辨率
+/// - 异步采集处理
+/// - 视频方向和镜像处理
+///
+/// ## 采集参数
+/// - 分辨率：1280x720
+/// - 帧率：25 fps
+/// - 格式：YUV 420（NV12）
+///
+/// ## 使用示例
+/// ```swift
+/// let capture = VideoCaptureService()
+/// try capture.setupCaptureSession()
+/// capture.onFrameCaptured = { sampleBuffer in
+///     // 处理视频帧
+/// }
+/// capture.startCapture()
+/// ```
 class VideoCaptureService: NSObject {
 
     // MARK: - Properties

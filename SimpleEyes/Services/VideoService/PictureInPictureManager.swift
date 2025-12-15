@@ -1,9 +1,39 @@
+//
+//  PictureInPictureManager.swift
+//  SimpleEyes
+//
+//  画中画管理器 - 实现 WebRTC 视频的画中画功能
+//  结合 AVPictureInPictureController 和自定义视频渲染器
+//
+
 import Foundation
 import AVKit
 import WebRTC
 import Combine
 
 /// 画中画管理器
+///
+/// 管理 WebRTC 视频流的画中画（PiP）功能
+///
+/// ## 功能特性
+/// - WebRTC 视频流的画中画支持
+/// - 自动视频帧转换（RTCVideoFrame -> CMSampleBuffer）
+/// - PiP 状态管理
+/// - 后台播放支持
+///
+/// ## 技术实现
+/// - 使用 AVSampleBufferDisplayLayer 渲染视频
+/// - 自定义 WebRTCPiPVideoRenderer 转换视频帧
+/// - AVPictureInPictureController 管理 PiP 窗口
+///
+/// ## 使用示例
+/// ```swift
+/// let pipManager = PictureInPictureManager()
+/// pipManager.setupWithVideoTrack(remoteVideoTrack)
+/// pipManager.startPictureInPicture()
+/// ```
+///
+/// - Note: 需要在 Info.plist 中启用 "Audio, AirPlay, and Picture in Picture" 后台模式
 @MainActor
 class PictureInPictureManager: NSObject, ObservableObject {
     // MARK: - Published Properties

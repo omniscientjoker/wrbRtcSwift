@@ -73,8 +73,14 @@ struct PageLogView: View {
                 }
             }
         }
-        .navigationTitle("页面访问日志")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBar(
+            title: "页面访问日志",
+            displayMode: .inline,
+            trackingParameters: [
+                "logCount": logs.count,
+                "from": "debug_tools"
+            ]
+        )
         .onAppear {
             refreshLogs()
         }

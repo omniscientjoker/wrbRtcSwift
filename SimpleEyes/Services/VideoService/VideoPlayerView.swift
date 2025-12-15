@@ -2,7 +2,8 @@
 //  VideoPlayerView.swift
 //  SimpleEyes
 //
-//  视频播放器 - SwiftUI + AVPlayer
+//  视频播放器视图 - SwiftUI + AVPlayer
+//  封装 AVPlayerViewController 用于播放网络视频流
 //
 
 import SwiftUI
@@ -10,6 +11,18 @@ import AVFoundation
 import AVKit
 
 /// HLS/RTMP 视频播放器视图
+///
+/// SwiftUI 视图组件，用于播放网络视频流
+///
+/// ## 支持的协议
+/// - HLS (HTTP Live Streaming)
+/// - RTMP (Real-Time Messaging Protocol)
+/// - HTTP/HTTPS 直连
+///
+/// ## 使用示例
+/// ```swift
+/// VideoPlayerView(url: "http://example.com/stream.m3u8")
+/// ```
 struct VideoPlayerView: UIViewControllerRepresentable {
     let url: String
 
@@ -49,7 +62,17 @@ struct VideoPlayerView: UIViewControllerRepresentable {
     }
 }
 
-/// 摄像头预览视图（用于本地视频采集）
+/// 摄像头预览视图
+///
+/// SwiftUI 视图组件，用于显示摄像头实时预览
+///
+/// ## 使用示例
+/// ```swift
+/// let capture = VideoCaptureService()
+/// if let previewLayer = capture.previewLayer {
+///     CameraPreviewView(previewLayer: previewLayer)
+/// }
+/// ```
 struct CameraPreviewView: UIViewRepresentable {
     let previewLayer: AVCaptureVideoPreviewLayer
 

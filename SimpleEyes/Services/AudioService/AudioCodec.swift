@@ -3,6 +3,7 @@
 //  SimpleEyes
 //
 //  音频编解码服务 - AAC 编解码器
+//  使用 AudioToolbox 实现高效的 AAC 编解码
 //
 
 import Foundation
@@ -10,6 +11,26 @@ import AVFoundation
 import AudioToolbox
 
 /// AAC 音频编码器
+///
+/// 将 PCM 音频数据编码为 AAC 格式，用于压缩音频传输
+///
+/// ## 编码参数
+/// - 采样率：16kHz
+/// - 声道数：单声道
+/// - 码率：32kbps
+/// - 帧大小：1024 samples
+///
+/// ## 使用场景
+/// - 降低网络传输带宽
+/// - 音频数据压缩存储
+///
+/// ## 使用示例
+/// ```swift
+/// let encoder = AACAudioEncoder()
+/// if let aacData = encoder?.encode(pcmData: pcmData) {
+///     // 发送或存储 AAC 数据
+/// }
+/// ```
 class AACAudioEncoder {
 
     private var converter: AudioConverterRef?
@@ -148,6 +169,21 @@ class AACAudioEncoder {
 }
 
 /// AAC 音频解码器
+///
+/// 将 AAC 音频数据解码为 PCM 格式，用于播放
+///
+/// ## 解码参数
+/// - 采样率：16kHz
+/// - 声道数：单声道
+/// - 输出格式：PCM Int16
+///
+/// ## 使用示例
+/// ```swift
+/// let decoder = AACAudioDecoder()
+/// if let pcmData = decoder?.decode(aacData: aacData) {
+///     // 播放 PCM 数据
+/// }
+/// ```
 class AACAudioDecoder {
 
     private var converter: AudioConverterRef?
