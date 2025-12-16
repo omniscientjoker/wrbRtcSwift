@@ -53,7 +53,6 @@ struct VideoCallView: View {
     var body: some View {
         ZStack {
             // 空闲界面（设备选择）
-            Color.white.ignoresSafeArea()
             if isViewActive {
                 CallIdleView(viewModel: viewModel, hasLoaded: $hasLoaded)
             } else {

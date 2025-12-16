@@ -23,62 +23,74 @@ import UIKit
 /// )
 /// NavigationBarConfig.setupGlobalAppearance(theme: customTheme)
 /// ```
+///
+
 enum NavigationBarConfig {
+    private static var hasSetupAppearance = false
+    // MARK: - 主题定义
+    static func adaptiveDefaultTheme(for interfaceStyle: UIUserInterfaceStyle) -> NavigationBarTheme {
+        switch interfaceStyle {
+        case .dark:
+            return NavigationBarTheme(
+                backgroundColor: .systemGray6,
+                titleColor: .label,
+                tintColor: .systemBlue
+            )
+        case .light, .unspecified:
+            return NavigationBarTheme(
+                backgroundColor: .systemBackground,
+                titleColor: .label,
+                tintColor: .systemBlue
+            )
+        @unknown default:
+            return lightTheme
+        }
+    }
 
-    // MARK: - 预定义主题
+    static var lightTheme: NavigationBarTheme {
+        NavigationBarTheme(
+            backgroundColor: .systemBackground,
+            titleColor: .label,
+            tintColor: .systemBlue
+        )
+    }
 
-    /// 默认主题（蓝色）
-    ///
-    /// 蓝色背景，白色文字和按钮
-    static let defaultTheme = NavigationBarTheme(
-        backgroundColor: .systemBlue,
-        titleColor: .white,
-        tintColor: .white
-    )
+    static var darkTheme: NavigationBarTheme {
+        NavigationBarTheme(
+            backgroundColor: .systemGray6,
+            titleColor: .label,
+            tintColor: .systemBlue
+        )
+    }
 
-    /// 浅色主题（白色背景）
-    ///
-    /// 白色背景，系统标签色文字，蓝色按钮
-    /// 适合浅色界面风格
-    static let lightTheme = NavigationBarTheme(
-        backgroundColor: .systemBackground,
-        titleColor: .label,
-        tintColor: .systemBlue
-    )
+    static var transparentTheme: NavigationBarTheme {
+        NavigationBarTheme(
+            backgroundColor: .clear,
+            titleColor: .label,
+            tintColor: .systemBlue,
+            isTransparent: true
+        )
+    }
 
-    /// 深色主题（深色背景）
-    ///
-    /// 深灰背景，系统标签色文字，蓝色按钮
-    /// 适合深色界面风格
-    static let darkTheme = NavigationBarTheme(
-        backgroundColor: .systemGray6,
-        titleColor: .label,
-        tintColor: .systemBlue
-    )
+    // MARK: - 设置方法
+    static func setupIfNeeded() {
+        guard !hasSetupAppearance else { return }
 
-    /// 透明主题
-    ///
-    /// 透明背景，系统标签色文字，蓝色按钮
-    /// 适合需要透明导航栏的场景
-    static let transparentTheme = NavigationBarTheme(
-        backgroundColor: .clear,
-        titleColor: .label,
-        tintColor: .systemBlue,
-        isTransparent: true
-    )
+        let style = UIApplication.shared.currentInterfaceStyle
+        setupGlobalAppearance(theme: adaptiveDefaultTheme(for: style))
+        hasSetupAppearance = true
 
-    // MARK: - 全局设置方法
+        NotificationCenter.default.addObserver(
+            forName: UIScene.willEnterForegroundNotification,
+            object: nil,
+            queue: .main
+        ) { _ in
+            let newStyle = UIApplication.shared.currentInterfaceStyle
+            NavigationBarConfig.setupGlobalAppearance(theme: NavigationBarConfig.adaptiveDefaultTheme(for: newStyle))
+        }
+    }
 
-    /// 应用全局导航栏主题
-    ///
-    /// 在 App 启动时调用（通常在 AppDelegate 或 App.init() 中）
-    /// 设置全局导航栏外观，所有页面默认使用该主题
-    ///
-    /// - Parameter theme: 要应用的主题，默认使用 defaultTheme
-    ///
-    /// - Note: 此方法会影响整个应用的导航栏样式
-    ///         如果需要在特定页面使用不同样式，可以使用 NavigationBarModifier
-    static func setupGlobalAppearance(theme: NavigationBarTheme = .defaultTheme) {
+    static func setupGlobalAppearance(theme: NavigationBarTheme = .init(backgroundColor: .systemBlue, titleColor: .white, tintColor: .white)) {
         let appearance = UINavigationBarAppearance()
 
         if theme.isTransparent {
@@ -91,18 +103,40 @@ enum NavigationBarConfig {
         appearance.titleTextAttributes = [.foregroundColor: theme.titleColor]
         appearance.largeTitleTextAttributes = [.foregroundColor: theme.titleColor]
 
-        // 设置按钮颜色
         UINavigationBar.appearance().tintColor = theme.tintColor
-
-        // 应用到所有状态
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
 
-        // iOS 15+ 可选：避免大标题下的分隔线
         if #available(iOS 15.0, *) {
             UINavigationBar.appearance().compactScrollEdgeAppearance = appearance
         }
+    }
+}
+
+// MARK: - UIApplication 扩展（安全获取当前界面风格）
+extension UIApplication {
+    var currentInterfaceStyle: UIUserInterfaceStyle {
+        if #available(iOS 15.0, *) {
+            // 遍历所有 connected window scenes
+            for scene in connectedScenes {
+                if let windowScene = scene as? UIWindowScene {
+                    for window in windowScene.windows {
+                        if !window.isHidden && window.rootViewController != nil {
+                            return window.traitCollection.userInterfaceStyle
+                        }
+                    }
+                }
+            }
+        } else {
+            // Fallback for iOS 13-14
+            for window in windows {
+                if !window.isHidden && window.rootViewController != nil {
+                    return window.traitCollection.userInterfaceStyle
+                }
+            }
+        }
+        return .unspecified
     }
 }
 
@@ -114,9 +148,7 @@ enum NavigationBarConfig {
 /// 定义导航栏的颜色和样式
 /// 可以创建自定义主题或使用预定义主题
 struct NavigationBarTheme {
-
     // MARK: - 属性
-
     /// 导航栏背景颜色
     let backgroundColor: UIColor
 
@@ -154,10 +186,6 @@ struct NavigationBarTheme {
     }
 
     // MARK: - 预设主题快捷访问
-
-    /// 默认蓝色主题
-    static let defaultTheme = NavigationBarConfig.defaultTheme
-
     /// 浅色主题
     static let lightTheme = NavigationBarConfig.lightTheme
 

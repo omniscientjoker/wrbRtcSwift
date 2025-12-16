@@ -236,18 +236,20 @@ class VideoCallViewModel: ObservableObject {
 
         APIClient.shared.getOnlineDevices { [weak self] result in
             guard let self = self else { return }
-
             Task { @MainActor in
                 self.isLoadingDevices = false
-
                 switch result {
                 case .success(let response):
-                    self.onlineDevices = response.devices
+                    if !self.localDeviceId.isEmpty {
+                        let updatedDevices = response.devices.filter { $0.id != self.localDeviceId }
+                        self.onlineDevices = updatedDevices
+                    } else {
+                        self.onlineDevices = response.devices
+                    }
                     print("[VideoCallViewModel] Loaded \(response.devices.count) online devices")
-
                     // 如果之前有选中的设备，尝试保持选中状态
                     if let selectedDeviceId = self.selectedDevice?.deviceId {
-                        self.selectedDevice = response.devices.first { $0.deviceId == selectedDeviceId }
+                        self.selectedDevice = self.onlineDevices.first { $0.deviceId == selectedDeviceId }
                     }
 
                 case .failure(let error):

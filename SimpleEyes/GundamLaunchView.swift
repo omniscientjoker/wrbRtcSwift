@@ -21,6 +21,8 @@ struct GundamLaunchView: View {
     @State private var scanLineProgress: CGFloat = 0
     @State private var glowPulse: Double = 0
     @State private var radarRotation: Double = 0
+    @State private var sideArcOpacity: Double = 0
+    @State private var arcGlowProgress: CGFloat = 0
 
     private let hudColor: Color = .white
     private let glowColor: Color = Color(red: 0.8, green: 0.9, blue: 1.0)
@@ -49,14 +51,19 @@ struct GundamLaunchView: View {
             // 六个发光扇形指示器（最显眼的元素）
             WingIndicatorsLayer(opacities: wingIndicatorsOpacity, glowPulse: glowPulse, color: hudColor)
 
-            // 中心十字准线
+            // 两侧圆弧线（新增）
+            SideArcLines(opacity: sideArcOpacity, glowProgress: arcGlowProgress, color: hudColor, glowColor: glowColor)
+
+            // 中心十字准线（缩小一半）
             CenterCrosshair(opacity: crosshairOpacity, color: hudColor)
+                .scaleEffect(0.5)
 
             // 斜向刻度线系统
             DiagonalScaleLines(opacity: scaleLineOpacity, color: hudColor)
 
-            // 中心几何符号
+            // 中心几何符号（缩小一半）
             CenterGeometrySymbols(opacity: centerGeometryOpacity, color: hudColor)
+                .scaleEffect(0.5)
 
             // 扫描线效果
             ScanLineEffect(progress: scanLineProgress, color: glowColor)
@@ -122,6 +129,17 @@ struct GundamLaunchView: View {
             }
         }
 
+        // 阶段5.5: 两侧圆弧线出现 (3.0-3.6s)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            withAnimation(.easeOut(duration: 0.6)) {
+                sideArcOpacity = 1.0
+            }
+            // 启动流光循环动画
+            withAnimation(.linear(duration: 2.0).repeatForever(autoreverses: false)) {
+                arcGlowProgress = 1.0
+            }
+        }
+
         // 阶段6: 扫描效果 (3.2-4.2s)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
             phase = .scanning
@@ -147,6 +165,7 @@ struct GundamLaunchView: View {
                 arcGridOpacity = 0
                 centerGeometryOpacity = 0
                 wingIndicatorsOpacity = [0, 0, 0, 0, 0, 0]
+                sideArcOpacity = 0
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
@@ -613,6 +632,188 @@ private struct RadarSweepEffect: View {
             )
             .rotationEffect(.degrees(rotation))
             .opacity(0.6)
+        }
+    }
+}
+
+// MARK: - 两侧圆弧线和流光效果
+
+private struct SideArcLines: View {
+    let opacity: Double
+    let glowProgress: CGFloat
+    let color: Color
+    let glowColor: Color
+
+    var body: some View {
+        GeometryReader { geo in
+            let w = geo.size.width
+            let h = geo.size.height
+            let cx = w / 2
+            let cy = h / 2
+
+            ZStack {
+                // 左侧圆弧组
+                LeftArcGroup(
+                    centerX: cx,
+                    centerY: cy,
+                    color: color,
+                    glowColor: glowColor,
+                    glowProgress: glowProgress
+                )
+
+                // 右侧圆弧组（镜像）
+                RightArcGroup(
+                    centerX: cx,
+                    centerY: cy,
+                    color: color,
+                    glowColor: glowColor,
+                    glowProgress: glowProgress
+                )
+            }
+        }
+        .opacity(opacity)
+    }
+}
+
+// 左侧圆弧组（单层大半圆，圆心在屏幕左边缘外）
+private struct LeftArcGroup: View {
+    let centerX: CGFloat
+    let centerY: CGFloat
+    let color: Color
+    let glowColor: Color
+    let glowProgress: CGFloat
+
+    var body: some View {
+        GeometryReader { geo in
+            let screenHeight = geo.size.height
+            // 圆心在屏幕左边缘外侧80像素
+            let arcCenterX: CGFloat = -80
+            let arcCenterY = centerY
+
+            // 单层大半圆，弧度增大，透明度降低
+            ArcWithGlow(
+                centerX: arcCenterX,
+                centerY: arcCenterY,
+                radius: min(screenHeight * 0.65, 600),
+                startAngle: -85,
+                endAngle: 85,
+                color: color.opacity(0.3),
+                glowColor: glowColor,
+                glowProgress: glowProgress,
+                glowStartAngle: -85
+            )
+        }
+    }
+}
+
+// 右侧圆弧组（单层大半圆，圆心在屏幕右边缘外）
+private struct RightArcGroup: View {
+    let centerX: CGFloat
+    let centerY: CGFloat
+    let color: Color
+    let glowColor: Color
+    let glowProgress: CGFloat
+
+    var body: some View {
+        GeometryReader { geo in
+            let screenWidth = geo.size.width
+            let screenHeight = geo.size.height
+            // 圆心在屏幕右边缘外侧80像素
+            let arcCenterX = screenWidth + 80
+            let arcCenterY = centerY
+
+            // 单层大半圆，弧度增大，透明度降低
+            ArcWithGlow(
+                centerX: arcCenterX,
+                centerY: arcCenterY,
+                radius: min(screenHeight * 0.65, 600),
+                startAngle: 95,
+                endAngle: 265,
+                color: color.opacity(0.3),
+                glowColor: glowColor,
+                glowProgress: glowProgress,
+                glowStartAngle: 95
+            )
+        }
+    }
+}
+
+// 带流光效果的圆弧
+private struct ArcWithGlow: View {
+    let centerX: CGFloat
+    let centerY: CGFloat
+    let radius: CGFloat
+    let startAngle: Double
+    let endAngle: Double
+    let color: Color
+    let glowColor: Color
+    let glowProgress: CGFloat
+    let glowStartAngle: Double
+
+    var body: some View {
+        Canvas { context, size in
+            // 绘制基础圆弧
+            var arcPath = Path()
+            arcPath.addArc(
+                center: CGPoint(x: centerX, y: centerY),
+                radius: radius,
+                startAngle: .degrees(startAngle),
+                endAngle: .degrees(endAngle),
+                clockwise: false
+            )
+            context.stroke(
+                arcPath,
+                with: .color(color),
+                lineWidth: 2.0
+            )
+
+            // 计算流光位置（沿圆弧运动）
+            let totalAngle = endAngle - startAngle
+            let currentAngle = startAngle + totalAngle * Double(glowProgress)
+            let angleRad = currentAngle * .pi / 180
+
+            let glowX = centerX + cos(angleRad) * radius
+            let glowY = centerY + sin(angleRad) * radius
+
+            // 绘制流光点（多层发光效果）
+            for i in 0..<5 {
+                let glowRadius = CGFloat(8 + i * 4)
+                let glowOpacity = 0.8 - Double(i) * 0.15
+
+                context.fill(
+                    Circle()
+                        .path(in: CGRect(
+                            x: glowX - glowRadius,
+                            y: glowY - glowRadius,
+                            width: glowRadius * 2,
+                            height: glowRadius * 2
+                        )),
+                    with: .color(glowColor.opacity(glowOpacity))
+                )
+            }
+
+            // 流光尾迹效果
+            _ = 30.0
+            for i in 0..<15 {
+                let trailAngle = currentAngle - Double(i) * 2.0
+                if trailAngle >= startAngle {
+                    let trailRad = trailAngle * .pi / 180
+                    let trailX = centerX + cos(trailRad) * radius
+                    let trailY = centerY + sin(trailRad) * radius
+                    let trailOpacity = 0.6 - Double(i) * 0.04
+
+                    context.fill(
+                        Circle()
+                            .path(in: CGRect(
+                                x: trailX - 2,
+                                y: trailY - 2,
+                                width: 4,
+                                height: 4
+                            )),
+                        with: .color(glowColor.opacity(trailOpacity))
+                    )
+                }
+            }
         }
     }
 }

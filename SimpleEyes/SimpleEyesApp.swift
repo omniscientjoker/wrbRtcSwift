@@ -76,7 +76,7 @@ struct SimpleEyesApp: App {
     /// - Note: 此方法在应用启动时仅调用一次
     private func setupNavigationBar() {
         // 使用默认蓝色主题
-        NavigationBarConfig.setupGlobalAppearance(theme: .defaultTheme)
+        NavigationBarConfig.setupIfNeeded()
 
         // 如果需要使用浅色主题，取消注释下面这行
         // NavigationBarConfig.setupGlobalAppearance(theme: .lightTheme)
