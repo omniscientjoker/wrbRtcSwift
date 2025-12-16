@@ -112,7 +112,10 @@ extension CombineNetworkError {
     /// 判断是否需要重试
     var shouldRetry: Bool {
         switch self {
-        case .networkError, .timeout, .httpError(let statusCode, _):
+        case .networkError, .timeout:
+            // 网络错误和超时可以重试
+            return true
+        case .httpError(let statusCode, _):
             // 5xx 错误可以重试
             return statusCode >= 500 && statusCode < 600
         default:

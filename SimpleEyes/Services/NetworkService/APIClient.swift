@@ -287,11 +287,22 @@ class APIClient {
             .build()
 
         // 3. 发起请求并获取原始数据
-        let user = try await service.request(
+        let users = try await service.request(
             url: "https://api.example.com/users",
             method: .get,
             responseType: [UserInfo].self,
             config: config
         )
+        
+        // 修复：NSLog 需要格式化字符串
+        NSLog("Users: %@", String(describing: users))
+        
+        // 或者使用 print（推荐）
+        print("Users:", users)
+        
+        // 如果需要更详细的日志
+        for (index, user) in users.enumerated() {
+            NSLog("User %d: %@", index + 1, "\(user.name) (ID: \(user.userId))")
+        }
     }
 }

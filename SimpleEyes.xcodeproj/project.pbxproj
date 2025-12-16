@@ -33,6 +33,9 @@
 		FA6701102EF0112400588415 /* CombineNetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67010A2EF0112400588415 /* CombineNetworkLogger.swift */; };
 		FA6701112EF0112400588415 /* NetworkServiceCombine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67010C2EF0112400588415 /* NetworkServiceCombine.swift */; };
 		FA6701122EF0112400588415 /* CombineNetworkExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6701092EF0112400588415 /* CombineNetworkExample.swift */; };
+		FA67011E2EF0E73E00588415 /* GundamLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA67011D2EF0E73E00588415 /* GundamLaunchView.swift */; };
+		FA6701252EF0F26100588415 /* combineUtiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6701242EF0F26100588415 /* combineUtiles.swift */; };
+		FA6701272EF0F73C00588415 /* combineUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6701262EF0F73C00588415 /* combineUITest.swift */; };
 		FA8E2F462EE9756A001CA5DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F422EE9756A001CA5DE /* ContentView.swift */; };
 		FA8E2F472EE9756A001CA5DE /* SimpleEyesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E2F432EE9756A001CA5DE /* SimpleEyesApp.swift */; };
 		FA8E2F482EE9756A001CA5DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8E2F412EE9756A001CA5DE /* Assets.xcassets */; };
@@ -96,6 +99,9 @@
 		FA67010A2EF0112400588415 /* CombineNetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineNetworkLogger.swift; sourceTree = "<group>"; };
 		FA67010B2EF0112400588415 /* CombineTokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTokenManager.swift; sourceTree = "<group>"; };
 		FA67010C2EF0112400588415 /* NetworkServiceCombine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceCombine.swift; sourceTree = "<group>"; };
+		FA67011D2EF0E73E00588415 /* GundamLaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GundamLaunchView.swift; sourceTree = "<group>"; };
+		FA6701242EF0F26100588415 /* combineUtiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = combineUtiles.swift; sourceTree = "<group>"; };
+		FA6701262EF0F73C00588415 /* combineUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = combineUITest.swift; sourceTree = "<group>"; };
 		FA8E2F162EE97502001CA5DE /* SimpleEyes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleEyes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA8E2F412EE9756A001CA5DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA8E2F422EE9756A001CA5DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -390,6 +396,15 @@
 			path = NetworkServiceCombine;
 			sourceTree = "<group>";
 		};
+		FA6701232EF0F24400588415 /* combineUtile */ = {
+			isa = PBXGroup;
+			children = (
+				FA6701242EF0F26100588415 /* combineUtiles.swift */,
+				FA6701262EF0F73C00588415 /* combineUITest.swift */,
+			);
+			path = combineUtile;
+			sourceTree = "<group>";
+		};
 		FA8E2F0D2EE97502001CA5DE = {
 			isa = PBXGroup;
 			children = (
@@ -465,6 +480,7 @@
 			isa = PBXGroup;
 			children = (
 				FA092C402EEE59EB00CAB434 /* logUtils */,
+				FA6701232EF0F24400588415 /* combineUtile */,
 				FA092C642EEFA2DD00CAB434 /* ColorUtils.swift */,
 				FA8E2FFD2EEA924B001CA5DE /* PermissionManager.swift */,
 			);
@@ -485,6 +501,7 @@
 				FA8E2F432EE9756A001CA5DE /* SimpleEyesApp.swift */,
 				FAD74AA92EED3FE000956CE9 /* SimpleEyes.entitlements */,
 				6B5155BD53FAF76BC57F59B8 /* LaunchScreen.storyboard */,
+				FA67011D2EF0E73E00588415 /* GundamLaunchView.swift */,
 			);
 			path = SimpleEyes;
 			sourceTree = "<group>";
@@ -662,6 +679,7 @@
 				FA8E2FBD2EEA9184001CA5DE /* WebRTCVideoView.swift in Sources */,
 				FA092C702EEFD4A900CAB434 /* MulticastServerDiscoveryService.swift in Sources */,
 				FA6701012EF008FC00588415 /* NetworkInterceptor.swift in Sources */,
+				FA6701272EF0F73C00588415 /* combineUITest.swift in Sources */,
 				FA8E2FBE2EEA9184001CA5DE /* VideoCallView.swift in Sources */,
 				FA8E2FBF2EEA9185001CA5DE /* ActiveCallView.swift in Sources */,
 				FA8E2F622EEA4FD4001CA5DE /* IntercomManager.swift in Sources */,
@@ -680,6 +698,8 @@
 				FA67010E2EF0112400588415 /* CombineNetworkError.swift in Sources */,
 				FA67010F2EF0112400588415 /* CombineTokenManager.swift in Sources */,
 				FA6701102EF0112400588415 /* CombineNetworkLogger.swift in Sources */,
+				FA67011E2EF0E73E00588415 /* GundamLaunchView.swift in Sources */,
+				FA6701252EF0F26100588415 /* combineUtiles.swift in Sources */,
 				FA6701112EF0112400588415 /* NetworkServiceCombine.swift in Sources */,
 				FA6701122EF0112400588415 /* CombineNetworkExample.swift in Sources */,
 				FA8E2F602EEA4F6E001CA5DE /* SettingsView.swift in Sources */,

@@ -16,8 +16,14 @@ import SwiftUI
 /// - 初始化应用全局配置（如导航栏主题）
 /// - 定义应用的根视图场景
 /// - 管理应用级别的状态和生命周期
+/// - 控制启动动画的显示
 @main
 struct SimpleEyesApp: App {
+
+    // MARK: - 状态属性
+    
+    /// 启动动画是否完成
+    @State private var launchAnimationComplete = false
 
     // MARK: - 初始化
 
@@ -36,10 +42,22 @@ struct SimpleEyesApp: App {
     /// 应用场景定义
     ///
     /// 定义应用的窗口场景，包含应用的根视图
-    /// - Returns: 返回 WindowGroup 场景，其中包含 ContentView 作为根视图
+    /// - Returns: 返回 WindowGroup 场景，根据启动动画状态显示不同视图
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ZStack {
+                // 主应用内容
+                ContentView()
+                    .opacity(launchAnimationComplete ? 1 : 0)
+                
+                // 启动动画（覆盖在上层）
+                if !launchAnimationComplete {
+                    GundamLaunchView(isAnimationComplete: $launchAnimationComplete)
+                        .transition(.opacity)
+                        .zIndex(1) // 确保在最上层
+                }
+            }
+            .animation(.easeInOut(duration: 0.5), value: launchAnimationComplete)
         }
     }
 

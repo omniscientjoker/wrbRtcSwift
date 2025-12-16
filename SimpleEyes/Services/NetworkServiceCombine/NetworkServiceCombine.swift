@@ -209,10 +209,9 @@ class NetworkServiceCombine {
         return URLSession.shared.dataTaskPublisher(for: urlRequest)
             .timeout(
                 .seconds(config.timeout),
-                scheduler: DispatchQueue.main,
-                customError: { CombineNetworkError.timeout }
+                scheduler: DispatchQueue.main
             )
-            .tryMap { [weak self] data, response -> Data in
+            .tryMap { data, response -> Data in
                 // 记录响应日志
                 if config.enableLogging {
                     CombineNetworkLogger.logResponse(
@@ -252,6 +251,10 @@ class NetworkServiceCombine {
                 if let networkError = error as? CombineNetworkError {
                     return networkError
                 } else if let urlError = error as? URLError {
+                    // 检查是否是超时错误
+                    if urlError.code == .timedOut {
+                        return .timeout
+                    }
                     return .networkError(urlError)
                 } else {
                     return .unknown(error)
